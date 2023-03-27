@@ -64,16 +64,100 @@ class LoginViewController: UIViewController {
         return button
     }()
     
+    private let signUpAndResetStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.spacing = 10
+        return stackView
+    }()
+    
+    private let signUpLabel: UILabel = {
+        let label = UILabel()
+        label.text = "회원가입 하러가기"
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .colorWithHex(hex: 0x696B72)
+        label.isUserInteractionEnabled = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let lineView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .colorWithHex(hex: 0x878787)
+        return view
+    }()
+    
+    private let passwordResetLabel: UILabel = {
+        let label = UILabel()
+        label.text = "비밀번호 재설정"
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .colorWithHex(hex: 0x696B72)
+        label.isUserInteractionEnabled = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        nameTextField.delegate = self
+        passwordTextField.delegate = self
         setPageLabel()
         setNameLabelAndField()
         setPasswordLabelAndField()
         setLoginButton()
-        nameTextField.delegate = self
-        passwordTextField.delegate = self
+        setSignUpAndReset()
+        setActionAndGesture()
     }
+    
+    private func setActionAndGesture() {
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        loginButton.isEnabled = false
+        let signUpGesture = UITapGestureRecognizer(target: self, action: #selector(signUpLabelTapped))
+        let resetGesture = UITapGestureRecognizer(target: self, action: #selector(passwordResetLabelTapped))
+        
+        signUpLabel.addGestureRecognizer(signUpGesture)
+        passwordResetLabel.addGestureRecognizer(resetGesture)
+    }
+    
+    
+    private func isInputVaild(_ input: String?) -> Bool {
+        if let input {
+            return input.count > 0 ? true : false
+        }
+        return false
+    }
+    
+    @objc private func loginButtonTapped() {
+        print("다음 화면으로")
+    }
+    
+    @objc func signUpLabelTapped() {
+        print("회원가입 버튼 클릭")
+    }
+    
+    @objc func passwordResetLabelTapped() {
+        print("리셋 버튼 클릭")
+    }
+}
+
+// MARK: - TextFieldDelegate
+extension LoginViewController: UITextFieldDelegate {
+    
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if isInputVaild(nameTextField.text) {
+            loginButton.backgroundColor = .colorWithHex(hex: 0x2358E1)
+            loginButton.isEnabled = true
+        } else {
+            loginButton.backgroundColor = .colorWithHex(hex: 0xD2D2D2)
+            loginButton.isEnabled = false
+        }
+    }
+}
+
+// MARK: - AutoLayout
+extension LoginViewController {
     
     private func setPageLabel() {
         view.addSubview(pageLabel)
@@ -115,9 +199,6 @@ class LoginViewController: UIViewController {
     }
     
     private func setLoginButton() {
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-        loginButton.isEnabled = false
-        
         view.addSubview(loginButton)
         
         NSLayoutConstraint.activate([
@@ -129,26 +210,18 @@ class LoginViewController: UIViewController {
         ])
     }
     
-    private func isInputVaild(_ input: String?) -> Bool {
-        if let input {
-            return input.count > 0 ? true : false
+    private func setSignUpAndReset() {
+        [signUpLabel, lineView, passwordResetLabel].forEach {
+            signUpAndResetStackView.addArrangedSubview($0)
         }
-        return false
-    }
-    
-    @objc private func loginButtonTapped() {
-        print("다음 화면으로")
-    }
-}
-
-extension LoginViewController: UITextFieldDelegate {
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        if isInputVaild(nameTextField.text) {
-            loginButton.backgroundColor = .colorWithHex(hex: 0x2358E1)
-            loginButton.isEnabled = true
-        } else {
-            loginButton.backgroundColor = .colorWithHex(hex: 0xD2D2D2)
-            loginButton.isEnabled = false
-        }
+        
+        view.addSubview(signUpAndResetStackView)
+        
+        NSLayoutConstraint.activate([
+            lineView.heightAnchor.constraint(equalToConstant: 14),
+            lineView.widthAnchor.constraint(equalToConstant: 1),
+            signUpAndResetStackView.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 34),
+            signUpAndResetStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
+        ])
     }
 }
