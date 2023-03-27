@@ -100,12 +100,10 @@
 			isa = PBXGroup;
 			children = (
 				54C237F229D149E50090BCC4 /* Common */,
-				54C237C229D13E570090BCC4 /* AppDelegate.swift */,
-				54C237C429D13E570090BCC4 /* SceneDelegate.swift */,
+				54C237F729D1635F0090BCC4 /* Resource */,
+				54C237F629D1632A0090BCC4 /* View */,
+				54C237F529D163220090BCC4 /* LifeCycle */,
 				54C237C629D13E570090BCC4 /* ViewController.swift */,
-				54C237CB29D13E580090BCC4 /* Assets.xcassets */,
-				54C237CD29D13E580090BCC4 /* LaunchScreen.storyboard */,
-				54C237D029D13E580090BCC4 /* Info.plist */,
 			);
 			path = FakeStore;
 			sourceTree = "<group>";
@@ -133,6 +131,32 @@
 				54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */,
 			);
 			path = Common;
+			sourceTree = "<group>";
+		};
+		54C237F529D163220090BCC4 /* LifeCycle */ = {
+			isa = PBXGroup;
+			children = (
+				54C237C229D13E570090BCC4 /* AppDelegate.swift */,
+				54C237C429D13E570090BCC4 /* SceneDelegate.swift */,
+			);
+			path = LifeCycle;
+			sourceTree = "<group>";
+		};
+		54C237F629D1632A0090BCC4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				54C237CD29D13E580090BCC4 /* LaunchScreen.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		54C237F729D1635F0090BCC4 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				54C237CB29D13E580090BCC4 /* Assets.xcassets */,
+				54C237D029D13E580090BCC4 /* Info.plist */,
+			);
+			path = Resource;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
