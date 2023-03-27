@@ -15,6 +15,7 @@
 		54C237DA29D13E580090BCC4 /* FakeStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237D929D13E580090BCC4 /* FakeStoreTests.swift */; };
 		54C237E429D13E580090BCC4 /* FakeStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237E329D13E580090BCC4 /* FakeStoreUITests.swift */; };
 		54C237E629D13E580090BCC4 /* FakeStoreUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237E529D13E580090BCC4 /* FakeStoreUITestsLaunchTests.swift */; };
+		54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		54C237DF29D13E580090BCC4 /* FakeStoreUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeStoreUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		54C237E329D13E580090BCC4 /* FakeStoreUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeStoreUITests.swift; sourceTree = "<group>"; };
 		54C237E529D13E580090BCC4 /* FakeStoreUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeStoreUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +99,7 @@
 		54C237C129D13E570090BCC4 /* FakeStore */ = {
 			isa = PBXGroup;
 			children = (
+				54C237F229D149E50090BCC4 /* Common */,
 				54C237C229D13E570090BCC4 /* AppDelegate.swift */,
 				54C237C429D13E570090BCC4 /* SceneDelegate.swift */,
 				54C237C629D13E570090BCC4 /* ViewController.swift */,
@@ -122,6 +125,14 @@
 				54C237E529D13E580090BCC4 /* FakeStoreUITestsLaunchTests.swift */,
 			);
 			path = FakeStoreUITests;
+			sourceTree = "<group>";
+		};
+		54C237F229D149E50090BCC4 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */,
+			);
+			path = Common;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,6 +268,7 @@
 				54C237C729D13E570090BCC4 /* ViewController.swift in Sources */,
 				54C237C329D13E570090BCC4 /* AppDelegate.swift in Sources */,
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
+				54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
