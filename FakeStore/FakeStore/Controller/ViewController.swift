@@ -20,7 +20,7 @@ class LoginViewController: UIViewController {
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .boldSystemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .colorWithHex(hex: 0x696B72)
         label.text = "Username"
@@ -38,7 +38,7 @@ class LoginViewController: UIViewController {
     
     private let passwordLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .body)
+        label.font = .boldSystemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .colorWithHex(hex: 0x696B72)
         label.text = "Password"
@@ -50,8 +50,17 @@ class LoginViewController: UIViewController {
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
         textField.placeholder = "Password을 입력해 주세요."
+        textField.isSecureTextEntry = true
         textField.backgroundColor = .colorWithHex(hex: 0xEEEFF1)
         return textField
+    }()
+    
+    private let passwordHideButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = .colorWithHex(hex: 0x696B72)
+        button.setImage(UIImage(systemName: "eye"), for: .normal)
+        return button
     }()
     
     private let loginButton: UIButton = {
@@ -112,13 +121,15 @@ class LoginViewController: UIViewController {
     }
     
     private func setActionAndGesture() {
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-        loginButton.isEnabled = false
         let signUpGesture = UITapGestureRecognizer(target: self, action: #selector(signUpLabelTapped))
         let resetGesture = UITapGestureRecognizer(target: self, action: #selector(passwordResetLabelTapped))
-        
         signUpLabel.addGestureRecognizer(signUpGesture)
         passwordResetLabel.addGestureRecognizer(resetGesture)
+
+        passwordHideButton.addTarget(self, action: #selector(passwordHideButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        loginButton.isEnabled = false
+        
     }
     
     
@@ -127,6 +138,15 @@ class LoginViewController: UIViewController {
             return input.count > 0 ? true : false
         }
         return false
+    }
+    
+    @objc private func passwordHideButtonTapped() {
+        passwordTextField.isSecureTextEntry.toggle()
+        passwordHideButton.isSelected.toggle()
+        
+        let buttonImage = UIImage(systemName:
+                                    passwordTextField.isSecureTextEntry ? "eye" : "eye.slash")
+        passwordHideButton.setImage(buttonImage, for: .normal)
     }
     
     @objc private func loginButtonTapped() {
@@ -186,6 +206,7 @@ extension LoginViewController {
     private func setPasswordLabelAndField() {
         view.addSubview(passwordLabel)
         view.addSubview(passwordTextField)
+        view.addSubview(passwordHideButton)
         
         NSLayoutConstraint.activate([
             passwordLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 40),
@@ -195,6 +216,9 @@ extension LoginViewController {
             passwordTextField.leftAnchor.constraint(equalTo: nameTextField.leftAnchor),
             passwordTextField.rightAnchor.constraint(equalTo: nameTextField.rightAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 48),
+            
+            passwordHideButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
+            passwordHideButton.rightAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: -16)
         ])
     }
     
@@ -202,7 +226,7 @@ extension LoginViewController {
         view.addSubview(loginButton)
         
         NSLayoutConstraint.activate([
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 116),
+            loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 76),
             loginButton.leftAnchor.constraint(equalTo: passwordTextField.leftAnchor),
             loginButton.rightAnchor.constraint(equalTo: passwordTextField.rightAnchor),
 
