@@ -8,7 +8,6 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-    
     private let pageLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30, weight: .bold)
@@ -112,23 +111,9 @@ class LoginViewController: UIViewController {
         view.backgroundColor = .white
         nameTextField.delegate = self
         passwordTextField.delegate = self
-        setPageLabel()
-        setNameLabelAndField()
-        setPasswordLabelAndField()
-        setLoginButton()
-        setSignUpAndReset()
+        setUI()
+        setConstraints()
         setActionAndGesture()
-    }
-    
-    private func setActionAndGesture() {
-        let signUpGesture = UITapGestureRecognizer(target: self, action: #selector(signUpLabelTapped))
-        let resetGesture = UITapGestureRecognizer(target: self, action: #selector(passwordResetLabelTapped))
-        signUpLabel.addGestureRecognizer(signUpGesture)
-        passwordResetLabel.addGestureRecognizer(resetGesture)
-
-        passwordHideButton.addTarget(self, action: #selector(passwordHideButtonTapped), for: .touchUpInside)
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
-        loginButton.isEnabled = false
     }
     
     private func isInputVaild(_ input: String?) -> Bool {
@@ -163,7 +148,6 @@ class LoginViewController: UIViewController {
 
 // MARK: - TextFieldDelegate
 extension LoginViewController: UITextFieldDelegate {
-    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if isInputVaild(nameTextField.text) {
             loginButton.backgroundColor = .colorWithHex(hex: 0x2358E1)
@@ -175,23 +159,34 @@ extension LoginViewController: UITextFieldDelegate {
     }
 }
 
-// MARK: - AutoLayout
+// MARK: - Coniguration Method
 extension LoginViewController {
-    
-    private func setPageLabel() {
-        view.addSubview(pageLabel)
+    private func setUI() {
+        [signUpLabel, lineView, passwordResetLabel].forEach {
+            signUpAndResetStackView.addArrangedSubview($0)
+        }
         
-        NSLayoutConstraint.activate([
-            pageLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 114),
-            pageLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16)
-        ])
+        [pageLabel, nameLabel, nameTextField, passwordLabel, passwordTextField, passwordHideButton, loginButton, signUpAndResetStackView].forEach {
+            view.addSubview($0)
+        }
     }
     
-    private func setNameLabelAndField() {
-        view.addSubview(nameLabel)
-        view.addSubview(nameTextField)
+    private func setActionAndGesture() {
+        let signUpGesture = UITapGestureRecognizer(target: self, action: #selector(signUpLabelTapped))
+        let resetGesture = UITapGestureRecognizer(target: self, action: #selector(passwordResetLabelTapped))
+        signUpLabel.addGestureRecognizer(signUpGesture)
+        passwordResetLabel.addGestureRecognizer(resetGesture)
         
+        passwordHideButton.addTarget(self, action: #selector(passwordHideButtonTapped), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
+        loginButton.isEnabled = false
+    }
+    
+    private func setConstraints() {
         NSLayoutConstraint.activate([
+            pageLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 114),
+            pageLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+            
             nameLabel.topAnchor.constraint(equalTo: pageLabel.bottomAnchor, constant: 34),
             nameLabel.leftAnchor.constraint(equalTo: pageLabel.leftAnchor),
             
@@ -199,15 +194,8 @@ extension LoginViewController {
             nameTextField.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
             nameTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
             nameTextField.heightAnchor.constraint(equalToConstant: 48),
-        ])
-    }
-    
-    private func setPasswordLabelAndField() {
-        view.addSubview(passwordLabel)
-        view.addSubview(passwordTextField)
-        view.addSubview(passwordHideButton)
-        
-        NSLayoutConstraint.activate([
+            
+            
             passwordLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 40),
             passwordLabel.leftAnchor.constraint(equalTo: nameTextField.leftAnchor),
             
@@ -217,32 +205,17 @@ extension LoginViewController {
             passwordTextField.heightAnchor.constraint(equalToConstant: 48),
             
             passwordHideButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
-            passwordHideButton.rightAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: -16)
-        ])
-    }
-    
-    private func setLoginButton() {
-        view.addSubview(loginButton)
-        
-        NSLayoutConstraint.activate([
+            passwordHideButton.rightAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: -16),
+            
+            
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 76),
             loginButton.leftAnchor.constraint(equalTo: passwordTextField.leftAnchor),
             loginButton.rightAnchor.constraint(equalTo: passwordTextField.rightAnchor),
-
-            loginButton.heightAnchor.constraint(equalToConstant: 48)
-        ])
-    }
-    
-    private func setSignUpAndReset() {
-        [signUpLabel, lineView, passwordResetLabel].forEach {
-            signUpAndResetStackView.addArrangedSubview($0)
-        }
-        
-        view.addSubview(signUpAndResetStackView)
-        
-        NSLayoutConstraint.activate([
+            loginButton.heightAnchor.constraint(equalToConstant: 48),
+            
             lineView.heightAnchor.constraint(equalToConstant: 14),
             lineView.widthAnchor.constraint(equalToConstant: 1),
+            
             signUpAndResetStackView.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 34),
             signUpAndResetStackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor)
         ])

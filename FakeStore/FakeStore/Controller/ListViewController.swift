@@ -8,8 +8,7 @@
 import UIKit
 
 class ListViewController: UIViewController {
-    
-    private let stackView: UIStackView = {
+    private let labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .equalSpacing
@@ -25,6 +24,12 @@ class ListViewController: UIViewController {
         return label
     }()
     
+    private let sortStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
     private let sortLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -34,12 +39,18 @@ class ListViewController: UIViewController {
         return label
     }()
     
+    private let sortImageView: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.down"))
+        imageView.tintColor = .colorWithHex(hex: 0x696B72)
+        return imageView
+    }()
+    
+    
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
-        let cellWidth = (UIScreen.main.bounds.width - 60) / 2
+        let cellWidth = (UIScreen.main.bounds.width - 50) / 2
         flowLayout.itemSize = CGSize(width: cellWidth, height: 330)
         flowLayout.minimumInteritemSpacing = 15
-        flowLayout.minimumLineSpacing = 20
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -49,9 +60,9 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setNaviBar()
-        setLabel()
+        setUI()
+        setConstraints()
         setCollectionView()
-        setCollectionView2()
     }
     
     private func setCollectionView() {
@@ -63,7 +74,6 @@ class ListViewController: UIViewController {
 
 // MARK: - CollectionView Method
 extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 10
     }
@@ -76,35 +86,36 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
 }
 
-// MARK: - AutoLayout & UI
+// MARK: - Coniguration Method
 extension ListViewController {
-    
     private func setNaviBar() {
         navigationItem.title = "상품목록"
     }
     
-    private func setLabel() {
-        [itemCountLabel, sortLabel].forEach {
-            stackView.addArrangedSubview($0)
+    private func setUI() {
+        [sortLabel, sortImageView].forEach {
+            sortStackView.addArrangedSubview($0)
         }
-        view.addSubview(stackView)
         
-        NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            stackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-            stackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
-        ])
+        [itemCountLabel, sortStackView].forEach {
+            labelStackView.addArrangedSubview($0)
+        }
+        
+        [labelStackView, collectionView].forEach {
+            view.addSubview($0)
+        }
     }
     
-    private func setCollectionView2() {
-        view.addSubview(collectionView)
-        
+    private func setConstraints() {
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: stackView.bottomAnchor, constant: 20),
-            collectionView.leftAnchor.constraint(equalTo: stackView.leftAnchor),
-            collectionView.rightAnchor.constraint(equalTo: stackView.rightAnchor),
+            labelStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            labelStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+            labelStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+            
+            collectionView.topAnchor.constraint(equalTo: labelStackView.bottomAnchor, constant: 20),
+            collectionView.leftAnchor.constraint(equalTo: labelStackView.leftAnchor),
+            collectionView.rightAnchor.constraint(equalTo: labelStackView.rightAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 }
-
