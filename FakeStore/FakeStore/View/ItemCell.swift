@@ -1,0 +1,70 @@
+//
+//  ItemCell.swift
+//  FakeStore
+//
+//  Created by leewonseok on 2023/03/27.
+//
+
+import UIKit
+
+class ItemCell: UICollectionViewCell {
+    
+    static let identifier = ItemCell.description()
+    
+    private let imageView: UIImageView = {
+       let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.backgroundColor = .red
+        imageView.layer.cornerRadius = 12
+        return imageView
+    }()
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "짱짱"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let priceLabel: UILabel = {
+        let label = UILabel()
+        label.text = "12,000원"
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setUI()
+        setConstraints()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+    
+    private func setUI() {
+        [imageView, titleLabel, priceLabel].forEach {
+            addSubview($0)
+        }
+        
+    }
+    
+    private func setConstraints() {
+        NSLayoutConstraint.activate([
+            imageView.heightAnchor.constraint(equalToConstant: 230),
+            imageView.topAnchor.constraint(equalTo: self.topAnchor),
+            imageView.leftAnchor.constraint(equalTo: self.leftAnchor),
+            imageView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            
+            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
+            titleLabel.leftAnchor.constraint(equalTo: imageView.leftAnchor),
+            titleLabel.rightAnchor.constraint(equalTo: imageView.rightAnchor),
+
+            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
+            priceLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
+            priceLabel.rightAnchor.constraint(equalTo: titleLabel.rightAnchor),
+            priceLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+        ])
+    }
+}

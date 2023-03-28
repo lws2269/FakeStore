@@ -129,9 +129,7 @@ class LoginViewController: UIViewController {
         passwordHideButton.addTarget(self, action: #selector(passwordHideButtonTapped), for: .touchUpInside)
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         loginButton.isEnabled = false
-        
     }
-    
     
     private func isInputVaild(_ input: String?) -> Bool {
         if let input {
@@ -150,7 +148,8 @@ class LoginViewController: UIViewController {
     }
     
     @objc private func loginButtonTapped() {
-        print("다음 화면으로")
+        let listViewController = ListViewController()
+        self.navigationController?.pushViewController(listViewController, animated: true)
     }
     
     @objc func signUpLabelTapped() {

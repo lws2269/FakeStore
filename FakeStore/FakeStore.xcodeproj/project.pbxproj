@@ -16,6 +16,8 @@
 		54C237E429D13E580090BCC4 /* FakeStoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237E329D13E580090BCC4 /* FakeStoreUITests.swift */; };
 		54C237E629D13E580090BCC4 /* FakeStoreUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237E529D13E580090BCC4 /* FakeStoreUITestsLaunchTests.swift */; };
 		54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */; };
+		54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237FB29D169690090BCC4 /* ListViewController.swift */; };
+		54C237FE29D19B540090BCC4 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237FD29D19B540090BCC4 /* ItemCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		54C237E329D13E580090BCC4 /* FakeStoreUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeStoreUITests.swift; sourceTree = "<group>"; };
 		54C237E529D13E580090BCC4 /* FakeStoreUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeStoreUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		54C237FB29D169690090BCC4 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
+		54C237FD29D19B540090BCC4 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -147,6 +151,7 @@
 			isa = PBXGroup;
 			children = (
 				54C237CD29D13E580090BCC4 /* LaunchScreen.storyboard */,
+				54C237FD29D19B540090BCC4 /* ItemCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				54C237C629D13E570090BCC4 /* LoginViewController.swift */,
+				54C237FB29D169690090BCC4 /* ListViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -307,7 +313,9 @@
 			files = (
 				54C237C729D13E570090BCC4 /* LoginViewController.swift in Sources */,
 				54C237C329D13E570090BCC4 /* AppDelegate.swift in Sources */,
+				54C237FE29D19B540090BCC4 /* ItemCell.swift in Sources */,
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
+				54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */,
 				54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
