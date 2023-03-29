@@ -49,7 +49,7 @@ class ListViewController: UIViewController {
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         let cellWidth = (UIScreen.main.bounds.width - 50) / 2
-        flowLayout.itemSize = CGSize(width: cellWidth, height: 330)
+        flowLayout.itemSize = CGSize(width: cellWidth, height: 300)
         flowLayout.minimumInteritemSpacing = 15
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         collectionView.translatesAutoresizingMaskIntoConstraints = false

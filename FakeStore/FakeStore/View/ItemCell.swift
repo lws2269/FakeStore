@@ -14,21 +14,26 @@ class ItemCell: UICollectionViewCell {
     private let imageView: UIImageView = {
        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .red
+        imageView.backgroundColor = .cyan
         imageView.layer.cornerRadius = 12
         return imageView
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "짱짱"
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = .colorWithHex(hex: 0x2B2B2B)
+        label.text = "짱구엉덩이더러워러더이덩엉구짱짱구엉덩이더러워러더이덩엉구짱"
+        label.numberOfLines = 2
+        label.font = .systemFont(ofSize: 12)
         return label
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
         label.text = "12,000원"
+        label.setContentHuggingPriority(.required, for: .vertical)
+        label.font = .boldSystemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -51,6 +56,7 @@ class ItemCell: UICollectionViewCell {
     }
     
     private func setConstraints() {
+            
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: 230),
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
