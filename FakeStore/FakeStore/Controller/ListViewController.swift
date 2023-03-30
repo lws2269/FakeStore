@@ -8,19 +8,43 @@
 import UIKit
 
 class ListViewController: UIViewController {
-    let manager = NetworkManager()
-    var items: [Item]? {
+    private let manager = NetworkManager()
+    private let sortList = [SortType.desc.description, SortType.asc.description]
+    private var sortState = 0
+    
+    private var items: [Item]? {
         didSet {
             DispatchQueue.main.async {
                 self.spinnerView.isHidden = true
                 self.itemCountLabel.text = "\(self.items?.count ?? 0)개의 상품"
+                self.sortLabel.text = self.sortList[self.sortState]
                 self.sortStackView.isHidden = false
                 self.collectionView.reloadData()
             }
         }
     }
+    private let sortTextField: UITextField = {
+        let textField = UITextField()
+        textField.isHidden = true
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
     
-    let spinnerView: UIActivityIndicatorView = {
+    private let toolbar: UIToolbar = {
+        let toolbar = UIToolbar()
+        toolbar.backgroundColor = .colorWithHex(hex: 0xF7F7F7)
+        toolbar.translatesAutoresizingMaskIntoConstraints = false
+        return toolbar
+    }()
+    
+    private let pickerView: UIPickerView = {
+        let pickerView = UIPickerView()
+        pickerView.backgroundColor = .white
+        pickerView.translatesAutoresizingMaskIntoConstraints = false
+        return pickerView
+    }()
+    
+    private let spinnerView: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
         spinner.color = .gray
         spinner.translatesAutoresizingMaskIntoConstraints = false
@@ -45,6 +69,7 @@ class ListViewController: UIViewController {
     private let sortStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isUserInteractionEnabled = true
         stackView.isHidden = true
         return stackView
     }()
@@ -54,7 +79,6 @@ class ListViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 12)
         label.textColor = .colorWithHex(hex: 0x696B72)
-        label.text = "최신순"
         return label
     }()
     
@@ -82,6 +106,8 @@ class ListViewController: UIViewController {
         setUI()
         setConstraints()
         setCollectionView()
+        setSortTextField()
+        setGesture()
         fetchItemAll()
     }
     
@@ -91,10 +117,49 @@ class ListViewController: UIViewController {
         collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
     }
     
+    private func setSortTextField() {
+        let barButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(sortDoneButtonTapped))
+        toolbar.setItems([barButton], animated: true)
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        sortTextField.inputAccessoryView = toolbar
+        sortTextField.inputView = pickerView
+    }
+    
+    private func setGesture() {
+        let sortGesture = UITapGestureRecognizer(target: self, action: #selector(sortButtonTapped))
+        sortStackView.addGestureRecognizer(sortGesture)
+    }
+    
+    @objc private func sortDoneButtonTapped() {
+        self.view.endEditing(true)
+        sortLabel.text = sortList[sortState]
+        sortItem(type: SortType(rawValue: sortState))
+    }
+    
+    @objc private func sortButtonTapped() {
+        sortTextField.becomeFirstResponder()
+    }
+    
+    private func sortItem(type: SortType?) {
+        switch type {
+        case .desc:
+            items = items?.sorted {
+                $0.id < $1.id
+            }
+        case .asc:
+            items = items?.sorted {
+                $0.id > $1.id
+            }
+        case .none:
+            break
+        }
+    }
+    
     private func fetchItemAll() {
-        spinnerView.startAnimating()
-        
         let urlString = "https://fakestoreapi.com/products"
+        
+        spinnerView.startAnimating()
         
         manager.fetchItemAll(urlString: urlString) { result in
             switch result {
@@ -117,13 +182,34 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCell.identifier, for: indexPath) as? ItemCell else {
             return ItemCell()
         }
-        let item = items?[indexPath.item]
-        cell.setData(title: item?.title, price: item?.price, imageURL: item?.image)
+        if let item = items?[indexPath.item] {
+            cell.setData(title: item.title, price: item.price, imageURL: item.image)
+        }
+        
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
+    }
+}
+
+// MARK: - PickerView Method
+extension ListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return sortList.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "\(sortList[row])"
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+         sortState = row
     }
 }
 
@@ -142,7 +228,7 @@ extension ListViewController {
             labelStackView.addArrangedSubview($0)
         }
         
-        [labelStackView, collectionView, spinnerView].forEach {
+        [labelStackView, collectionView, spinnerView, sortTextField].forEach {
             view.addSubview($0)
         }
     }

@@ -13,7 +13,7 @@ class ItemCell: UICollectionViewCell {
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(systemName: "photo")
+        imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 12
         return imageView
     }()
@@ -45,15 +45,17 @@ class ItemCell: UICollectionViewCell {
         super.init(coder: coder)
     }
     
-    func setData(title: String?, price: Double?, imageURL: String?) {
+    override func prepareForReuse() {
+        imageView.image = nil
+        titleLabel.text = nil
+        priceLabel.text = nil
+    }
+    
+    func setData(title: String, price: Double, imageURL: String) {
         self.titleLabel.text = title
-        self.priceLabel.text = price?.description
+        self.priceLabel.text = "$ \(price)"
         
-        guard let urlString = imageURL else {
-            return
-        }
-        
-        NetworkManager().fetchImage(urlString: urlString) { result in
+        NetworkManager().fetchImage(urlString: imageURL) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
@@ -63,14 +65,12 @@ class ItemCell: UICollectionViewCell {
                 }
             }
         }
-        
     }
     
     private func setUI() {
         [imageView, titleLabel, priceLabel].forEach {
             addSubview($0)
         }
-        
     }
     
     private func setConstraints() {

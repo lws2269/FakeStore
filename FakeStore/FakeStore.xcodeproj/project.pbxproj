@@ -20,6 +20,7 @@
 		54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */; };
 		54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237FB29D169690090BCC4 /* ListViewController.swift */; };
 		54C237FE29D19B540090BCC4 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237FD29D19B540090BCC4 /* ItemCell.swift */; };
+		54FCCF2429D57080002A97E5 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FCCF2329D57080002A97E5 /* SortType.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +58,7 @@
 		54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		54C237FB29D169690090BCC4 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		54C237FD29D19B540090BCC4 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
+		54FCCF2329D57080002A97E5 /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +185,7 @@
 			children = (
 				5429202E29D41E3700AFF6F7 /* NetworkManager.swift */,
 				5494A99229D52569004B04AE /* Item.swift */,
+				54FCCF2329D57080002A97E5 /* SortType.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				54C237C329D13E570090BCC4 /* AppDelegate.swift in Sources */,
 				54C237FE29D19B540090BCC4 /* ItemCell.swift in Sources */,
 				5429202F29D41E3700AFF6F7 /* NetworkManager.swift in Sources */,
+				54FCCF2429D57080002A97E5 /* SortType.swift in Sources */,
 				5494A99329D52569004B04AE /* Item.swift in Sources */,
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
 				54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */,
