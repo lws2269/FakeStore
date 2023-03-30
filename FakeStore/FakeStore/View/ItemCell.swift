@@ -8,13 +8,12 @@
 import UIKit
 
 class ItemCell: UICollectionViewCell {
-    
     static let identifier = ItemCell.description()
     
     private let imageView: UIImageView = {
-       let imageView = UIImageView()
+        let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.backgroundColor = .cyan
+        imageView.image = UIImage(systemName: "photo")
         imageView.layer.cornerRadius = 12
         return imageView
     }()
@@ -23,7 +22,6 @@ class ItemCell: UICollectionViewCell {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = .colorWithHex(hex: 0x2B2B2B)
-        label.text = "짱구엉덩이더러워러더이덩엉구짱짱구엉덩이더러워러더이덩엉구짱"
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 12)
         return label
@@ -31,7 +29,6 @@ class ItemCell: UICollectionViewCell {
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "12,000원"
         label.setContentHuggingPriority(.required, for: .vertical)
         label.font = .boldSystemFont(ofSize: 14)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -48,6 +45,27 @@ class ItemCell: UICollectionViewCell {
         super.init(coder: coder)
     }
     
+    func setData(title: String?, price: Double?, imageURL: String?) {
+        self.titleLabel.text = title
+        self.priceLabel.text = price?.description
+        
+        guard let urlString = imageURL else {
+            return
+        }
+        
+        NetworkManager().fetchImage(urlString: urlString) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let image):
+                    self.imageView.image = image
+                case .failure(_):
+                    break
+                }
+            }
+        }
+        
+    }
+    
     private func setUI() {
         [imageView, titleLabel, priceLabel].forEach {
             addSubview($0)
@@ -56,7 +74,6 @@ class ItemCell: UICollectionViewCell {
     }
     
     private func setConstraints() {
-            
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: 230),
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -66,7 +83,7 @@ class ItemCell: UICollectionViewCell {
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
             titleLabel.leftAnchor.constraint(equalTo: imageView.leftAnchor),
             titleLabel.rightAnchor.constraint(equalTo: imageView.rightAnchor),
-
+            
             priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
             priceLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
             priceLabel.rightAnchor.constraint(equalTo: titleLabel.rightAnchor),

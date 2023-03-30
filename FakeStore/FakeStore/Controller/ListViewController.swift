@@ -8,6 +8,25 @@
 import UIKit
 
 class ListViewController: UIViewController {
+    let manager = NetworkManager()
+    var items: [Item]? {
+        didSet {
+            DispatchQueue.main.async {
+                self.spinnerView.isHidden = true
+                self.itemCountLabel.text = "\(self.items?.count ?? 0)개의 상품"
+                self.sortStackView.isHidden = false
+                self.collectionView.reloadData()
+            }
+        }
+    }
+    
+    let spinnerView: UIActivityIndicatorView = {
+        let spinner = UIActivityIndicatorView(style: .large)
+        spinner.color = .gray
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        return spinner
+    }()
+    
     private let labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -18,7 +37,6 @@ class ListViewController: UIViewController {
     private let itemCountLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "14개의 상품"
         label.font = .systemFont(ofSize: 14)
         label.textColor = .colorWithHex(hex: 0x696B72)
         return label
@@ -27,6 +45,7 @@ class ListViewController: UIViewController {
     private let sortStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.isHidden = true
         return stackView
     }()
     
@@ -63,6 +82,7 @@ class ListViewController: UIViewController {
         setUI()
         setConstraints()
         setCollectionView()
+        fetchItemAll()
     }
     
     private func setCollectionView() {
@@ -70,19 +90,40 @@ class ListViewController: UIViewController {
         collectionView.delegate = self
         collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
     }
+    
+    private func fetchItemAll() {
+        spinnerView.startAnimating()
+        
+        let urlString = "https://fakestoreapi.com/products"
+        
+        manager.fetchItemAll(urlString: urlString) { result in
+            switch result {
+            case .success(let items):
+                self.items = items
+            case .failure(_):
+                break
+            }
+        }
+    }
 }
 
 // MARK: - CollectionView Method
 extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        return items?.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCell.identifier, for: indexPath) as? ItemCell else {
             return ItemCell()
         }
+        let item = items?[indexPath.item]
+        cell.setData(title: item?.title, price: item?.price, imageURL: item?.image)
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
     }
 }
 
@@ -101,13 +142,16 @@ extension ListViewController {
             labelStackView.addArrangedSubview($0)
         }
         
-        [labelStackView, collectionView].forEach {
+        [labelStackView, collectionView, spinnerView].forEach {
             view.addSubview($0)
         }
     }
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
+            spinnerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             labelStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             labelStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
             labelStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
