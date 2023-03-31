@@ -15,10 +15,10 @@ class ListViewController: UIViewController {
     private var items: [Item]? {
         didSet {
             DispatchQueue.main.async {
+                self.sortStackView.isHidden = false
                 self.spinnerView.isHidden = true
                 self.itemCountLabel.text = "\(self.items?.count ?? 0)개의 상품"
                 self.sortLabel.text = self.sortList[self.sortState]
-                self.sortStackView.isHidden = false
                 self.collectionView.reloadData()
             }
         }
@@ -190,7 +190,8 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
+        let detailViewController = DetailViewController()
+        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 

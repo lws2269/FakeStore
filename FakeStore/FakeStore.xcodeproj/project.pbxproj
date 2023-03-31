@@ -21,6 +21,7 @@
 		54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237FB29D169690090BCC4 /* ListViewController.swift */; };
 		54C237FE29D19B540090BCC4 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237FD29D19B540090BCC4 /* ItemCell.swift */; };
 		54FCCF2429D57080002A97E5 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FCCF2329D57080002A97E5 /* SortType.swift */; };
+		54FCCF2829D5747E002A97E5 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FCCF2729D5747E002A97E5 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,7 @@
 		54C237FB29D169690090BCC4 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		54C237FD29D19B540090BCC4 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		54FCCF2329D57080002A97E5 /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
+		54FCCF2729D5747E002A97E5 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -176,6 +178,7 @@
 			children = (
 				54C237C629D13E570090BCC4 /* LoginViewController.swift */,
 				54C237FB29D169690090BCC4 /* ListViewController.swift */,
+				54FCCF2729D5747E002A97E5 /* DetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				54FCCF2429D57080002A97E5 /* SortType.swift in Sources */,
 				5494A99329D52569004B04AE /* Item.swift in Sources */,
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
+				54FCCF2829D5747E002A97E5 /* DetailViewController.swift in Sources */,
 				54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */,
 				54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */,
 			);
