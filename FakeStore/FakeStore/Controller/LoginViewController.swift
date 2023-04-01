@@ -185,32 +185,32 @@ extension LoginViewController {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             pageLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 114),
-            pageLabel.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
+            pageLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             
             nameLabel.topAnchor.constraint(equalTo: pageLabel.bottomAnchor, constant: 34),
-            nameLabel.leftAnchor.constraint(equalTo: pageLabel.leftAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: pageLabel.leadingAnchor),
             
             nameTextField.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 11),
-            nameTextField.leftAnchor.constraint(equalTo: nameLabel.leftAnchor),
-            nameTextField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+            nameTextField.leadingAnchor.constraint(equalTo: nameLabel.leadingAnchor),
+            nameTextField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             nameTextField.heightAnchor.constraint(equalToConstant: 48),
             
             
             passwordLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 40),
-            passwordLabel.leftAnchor.constraint(equalTo: nameTextField.leftAnchor),
+            passwordLabel.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
             
             passwordTextField.topAnchor.constraint(equalTo: passwordLabel.bottomAnchor, constant: 11),
-            passwordTextField.leftAnchor.constraint(equalTo: nameTextField.leftAnchor),
-            passwordTextField.rightAnchor.constraint(equalTo: nameTextField.rightAnchor),
+            passwordTextField.leadingAnchor.constraint(equalTo: nameTextField.leadingAnchor),
+            passwordTextField.trailingAnchor.constraint(equalTo: nameTextField.trailingAnchor),
             passwordTextField.heightAnchor.constraint(equalToConstant: 48),
             
             passwordHideButton.centerYAnchor.constraint(equalTo: passwordTextField.centerYAnchor),
-            passwordHideButton.rightAnchor.constraint(equalTo: passwordTextField.rightAnchor, constant: -16),
+            passwordHideButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor, constant: -16),
             
             
             loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 76),
-            loginButton.leftAnchor.constraint(equalTo: passwordTextField.leftAnchor),
-            loginButton.rightAnchor.constraint(equalTo: passwordTextField.rightAnchor),
+            loginButton.leadingAnchor.constraint(equalTo: passwordTextField.leadingAnchor),
+            loginButton.trailingAnchor.constraint(equalTo: passwordTextField.trailingAnchor),
             loginButton.heightAnchor.constraint(equalToConstant: 48),
             
             lineView.heightAnchor.constraint(equalToConstant: 14),

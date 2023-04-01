@@ -55,7 +55,7 @@ class ItemCell: UICollectionViewCell {
         self.titleLabel.text = title
         self.priceLabel.text = "$ \(price)"
         
-        NetworkManager().fetchImage(urlString: imageURL) { result in
+        NetworkManager.fetchImage(urlString: imageURL) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let image):
@@ -77,16 +77,16 @@ class ItemCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: 230),
             imageView.topAnchor.constraint(equalTo: self.topAnchor),
-            imageView.leftAnchor.constraint(equalTo: self.leftAnchor),
-            imageView.rightAnchor.constraint(equalTo: self.rightAnchor),
+            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
-            titleLabel.leftAnchor.constraint(equalTo: imageView.leftAnchor),
-            titleLabel.rightAnchor.constraint(equalTo: imageView.rightAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
+            titleLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
             
             priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
-            priceLabel.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
-            priceLabel.rightAnchor.constraint(equalTo: titleLabel.rightAnchor),
+            priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            priceLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             priceLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }

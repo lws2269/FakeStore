@@ -17,7 +17,7 @@ enum NetworkError: Error {
 }
 
 class NetworkManager {
-    func fetchItemAll(urlString: String, completion: @escaping (Result<[Item], Error>) -> Void) {
+    static func fetchItemAll(urlString: String, completion: @escaping (Result<[Item], Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
             return
@@ -51,7 +51,7 @@ class NetworkManager {
         task.resume()
     }
     
-    func fetchImage(urlString: String,  completion: @escaping (Result<UIImage, Error>) -> Void) {
+    static func fetchImage(urlString: String,  completion: @escaping (Result<UIImage, Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
             return

@@ -8,6 +8,58 @@
 import UIKit
 
 class DetailViewController: UIViewController {
+    private var imageUrl: String? {
+        didSet {
+            if let imageUrl {
+                NetworkManager.fetchImage(urlString: imageUrl, completion: { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let image):
+                            self.imageView.image = image
+                        case .failure(_):
+                            self.imageView.image = UIImage(systemName: "x.square")
+                        }
+                    }
+                })
+            }
+        }
+    }
+    
+    private var itemTitle: String? {
+        didSet {
+            titleLabel.text = title
+        }
+    }
+    
+    private var category: Category? {
+        didSet {
+            if let category {
+                categoryLabel.text = "카테고리 : \(category.rawValue)"
+            }
+        }
+    }
+    
+    private var rate: Double? {
+        didSet {
+            if let rate {
+                rateLabel.text = "별점 \(rate)"
+            }
+        }
+    }
+    
+    private var itemCount: Int? {
+        didSet {
+            if let itemCount {
+                itemCountLabel.text = "상품구매수량 : \(itemCount)"
+            }
+        }
+    }
+    
+    private var itemContent: String? {
+        didSet {
+            descriptionLabel.text = itemContent
+        }
+    }
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -96,16 +148,15 @@ class DetailViewController: UIViewController {
         view.backgroundColor = .white
         setUI()
         setConstariants()
-        setData()
     }
     
-    func setData() {
-        imageView.image = UIImage(systemName: "star")
-        titleLabel.text = "Title"
-        categoryLabel.text = "카테고리 : juwely"
-        rateLabel.text = "별점 4.8"
-        itemCountLabel.text = "상품구매수량 : 120"
-        descriptionLabel.text = "description"
+    func setData(item: Item) {
+        itemTitle = item.title
+        imageUrl = item.image
+        category = item.category
+        itemContent = item.description
+        itemCount = item.rating.count
+        rate = item.rating.rate
     }
     
     private func setUI() {
@@ -137,36 +188,36 @@ class DetailViewController: UIViewController {
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
             imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageView.leftAnchor.constraint(equalTo: contentView.leftAnchor),
-            imageView.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             imageView.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: 0.4),
             
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
-            titleLabel.leftAnchor.constraint(equalTo: scrollView.leftAnchor, constant: 14),
-            titleLabel.rightAnchor.constraint(equalTo: scrollView.rightAnchor, constant: -14),
+            titleLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 14),
+            titleLabel.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -14),
             
             rateStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 19),
-            rateStackView.leftAnchor.constraint(equalTo: titleLabel.leftAnchor),
-            rateStackView.rightAnchor.constraint(equalTo: titleLabel.rightAnchor),
+            rateStackView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            rateStackView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
             rateStackView.heightAnchor.constraint(equalToConstant: 60),
             
             
             lineView.topAnchor.constraint(equalTo: rateStackView.bottomAnchor),
-            lineView.leftAnchor.constraint(equalTo: rateStackView.leftAnchor),
-            lineView.rightAnchor.constraint(equalTo: rateStackView.rightAnchor),
+            lineView.leadingAnchor.constraint(equalTo: rateStackView.leadingAnchor),
+            lineView.trailingAnchor.constraint(equalTo: rateStackView.trailingAnchor),
             lineView.heightAnchor.constraint(equalToConstant: 1),
             
             categoryLabel.topAnchor.constraint(equalTo: lineView.bottomAnchor, constant: 12),
-            categoryLabel.leftAnchor.constraint(equalTo: lineView.leftAnchor),
-            categoryLabel.rightAnchor.constraint(equalTo: lineView.rightAnchor),
+            categoryLabel.leadingAnchor.constraint(equalTo: lineView.leadingAnchor),
+            categoryLabel.trailingAnchor.constraint(equalTo: lineView.trailingAnchor),
             
             itemCountLabel.topAnchor.constraint(equalTo: categoryLabel.bottomAnchor, constant: 12),
-            itemCountLabel.leftAnchor.constraint(equalTo: lineView.leftAnchor),
-            itemCountLabel.rightAnchor.constraint(equalTo: lineView.rightAnchor),
+            itemCountLabel.leadingAnchor.constraint(equalTo: lineView.leadingAnchor),
+            itemCountLabel.trailingAnchor.constraint(equalTo: lineView.trailingAnchor),
             
             descriptionLabel.topAnchor.constraint(equalTo: itemCountLabel.bottomAnchor, constant: 30),
-            descriptionLabel.leftAnchor.constraint(equalTo: itemCountLabel.leftAnchor),
-            descriptionLabel.rightAnchor.constraint(equalTo: itemCountLabel.rightAnchor),
+            descriptionLabel.leadingAnchor.constraint(equalTo: itemCountLabel.leadingAnchor),
+            descriptionLabel.trailingAnchor.constraint(equalTo: itemCountLabel.trailingAnchor),
             descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }

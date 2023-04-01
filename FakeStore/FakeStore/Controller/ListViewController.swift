@@ -8,7 +8,6 @@
 import UIKit
 
 class ListViewController: UIViewController {
-    private let manager = NetworkManager()
     private let sortList = [SortType.desc.description, SortType.asc.description]
     private var sortState = 0
     
@@ -161,7 +160,7 @@ class ListViewController: UIViewController {
         
         spinnerView.startAnimating()
         
-        manager.fetchItemAll(urlString: urlString) { result in
+        NetworkManager.fetchItemAll(urlString: urlString) { result in
             switch result {
             case .success(let items):
                 self.items = items
@@ -182,6 +181,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCell.identifier, for: indexPath) as? ItemCell else {
             return ItemCell()
         }
+    
         if let item = items?[indexPath.item] {
             cell.setData(title: item.title, price: item.price, imageURL: item.image)
         }
@@ -191,6 +191,11 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let detailViewController = DetailViewController()
+        
+        if let item = items?[indexPath.item] {
+            detailViewController.setData(item: item)
+        }
+        
         navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
@@ -240,12 +245,12 @@ extension ListViewController {
             spinnerView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             labelStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            labelStackView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 16),
-            labelStackView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+            labelStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            labelStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             
             collectionView.topAnchor.constraint(equalTo: labelStackView.bottomAnchor, constant: 20),
-            collectionView.leftAnchor.constraint(equalTo: labelStackView.leftAnchor),
-            collectionView.rightAnchor.constraint(equalTo: labelStackView.rightAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: labelStackView.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: labelStackView.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
