@@ -22,6 +22,19 @@ class ListViewController: UIViewController {
             }
         }
     }
+    
+    private let toTopButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "arrow.up.circle"), for: .normal)
+        button.contentVerticalAlignment = .fill
+        button.tintColor = .colorWithHex(hex: 0xD9D9D9)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 22
+        button.contentHorizontalAlignment = .fill
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let sortTextField: UITextField = {
         let textField = UITextField()
         textField.isHidden = true
@@ -106,28 +119,8 @@ class ListViewController: UIViewController {
         setConstraints()
         setCollectionView()
         setSortTextField()
-        setGesture()
+        setActionAndGesture()
         fetchItemAll()
-    }
-    
-    private func setCollectionView() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
-    }
-    
-    private func setSortTextField() {
-        let barButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(sortDoneButtonTapped))
-        toolbar.setItems([barButton], animated: true)
-        pickerView.delegate = self
-        pickerView.dataSource = self
-        sortTextField.inputAccessoryView = toolbar
-        sortTextField.inputView = pickerView
-    }
-    
-    private func setGesture() {
-        let sortGesture = UITapGestureRecognizer(target: self, action: #selector(sortButtonTapped))
-        sortStackView.addGestureRecognizer(sortGesture)
     }
     
     @objc private func sortDoneButtonTapped() {
@@ -138,6 +131,10 @@ class ListViewController: UIViewController {
     
     @objc private func sortButtonTapped() {
         sortTextField.becomeFirstResponder()
+    }
+    
+    @objc private func toTopButtonTapped() {
+        collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
     
     private func sortItem(type: SortType?) {
@@ -225,6 +222,27 @@ extension ListViewController {
         navigationItem.title = "상품목록"
     }
     
+    private func setCollectionView() {
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
+    }
+    
+    private func setSortTextField() {
+        let barButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(sortDoneButtonTapped))
+        toolbar.setItems([barButton], animated: true)
+        pickerView.delegate = self
+        pickerView.dataSource = self
+        sortTextField.inputAccessoryView = toolbar
+        sortTextField.inputView = pickerView
+    }
+    
+    private func setActionAndGesture() {
+        let sortGesture = UITapGestureRecognizer(target: self, action: #selector(sortButtonTapped))
+        sortStackView.addGestureRecognizer(sortGesture)
+        toTopButton.addTarget(self, action: #selector(toTopButtonTapped), for: .touchUpInside)
+    }
+    
     private func setUI() {
         [sortLabel, sortImageView].forEach {
             sortStackView.addArrangedSubview($0)
@@ -234,7 +252,7 @@ extension ListViewController {
             labelStackView.addArrangedSubview($0)
         }
         
-        [labelStackView, collectionView, spinnerView, sortTextField].forEach {
+        [labelStackView, collectionView, spinnerView, sortTextField, toTopButton].forEach {
             view.addSubview($0)
         }
     }
@@ -252,6 +270,11 @@ extension ListViewController {
             collectionView.leadingAnchor.constraint(equalTo: labelStackView.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: labelStackView.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            toTopButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            toTopButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            toTopButton.heightAnchor.constraint(equalToConstant: 44),
+            toTopButton.widthAnchor.constraint(equalToConstant: 44)
         ])
     }
 }

@@ -61,6 +61,18 @@ class DetailViewController: UIViewController {
         }
     }
     
+    private let toTopButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "arrow.up.circle"), for: .normal)
+        button.contentVerticalAlignment = .fill
+        button.tintColor = .colorWithHex(hex: 0xD9D9D9)
+        button.backgroundColor = .white
+        button.layer.cornerRadius = 22
+        button.contentHorizontalAlignment = .fill
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -148,11 +160,20 @@ class DetailViewController: UIViewController {
         view.backgroundColor = .white
         setUI()
         setConstariants()
+        setAction()
+    }
+    
+    @objc private func toTopButtonTapped() {
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
 }
 
 // MARK: - Coniguration Method
 extension DetailViewController {
+    private func setAction() {
+        toTopButton.addTarget(self, action: #selector(toTopButtonTapped), for: .touchUpInside)
+    }
+    
     func setData(item: Item) {
         itemTitle = item.title
         imageUrl = item.image
@@ -170,7 +191,7 @@ extension DetailViewController {
             rateStackView.addArrangedSubview($0)
         }
         
-        [imageView, titleLabel, rateStackView, lineView, categoryLabel, itemCountLabel, descriptionLabel].forEach {
+        [imageView, titleLabel, rateStackView, lineView, categoryLabel, itemCountLabel, descriptionLabel, toTopButton].forEach {
             contentView.addSubview($0)
         }
     }
@@ -220,7 +241,12 @@ extension DetailViewController {
             descriptionLabel.topAnchor.constraint(equalTo: itemCountLabel.bottomAnchor, constant: 30),
             descriptionLabel.leadingAnchor.constraint(equalTo: itemCountLabel.leadingAnchor),
             descriptionLabel.trailingAnchor.constraint(equalTo: itemCountLabel.trailingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            descriptionLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            
+            toTopButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            toTopButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15),
+            toTopButton.heightAnchor.constraint(equalToConstant: 44),
+            toTopButton.widthAnchor.constraint(equalToConstant: 44)
         ])
     }
 }
