@@ -43,6 +43,7 @@ class DetailViewController: UIViewController {
         didSet {
             if let rate {
                 rateLabel.text = "별점 \(rate)"
+                drawStar(value: rate)
             }
         }
     }
@@ -57,6 +58,7 @@ class DetailViewController: UIViewController {
     
     private var content: String? {
         didSet {
+            descriptionLabel.text = content
             descriptionLabel.text = content
         }
     }
@@ -97,6 +99,7 @@ class DetailViewController: UIViewController {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.layoutMargins = UIEdgeInsets(top: 20.5, left: 0, bottom: 20.5, right: 0)
+        stackView.spacing = 15
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.isLayoutMarginsRelativeArrangement = true
         return stackView
@@ -118,9 +121,11 @@ class DetailViewController: UIViewController {
         return label
     }()
     
-    private let rateImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "star"))
-        return imageView
+    private let rateImageStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
     }()
     
     private let lineView: UIView = {
@@ -166,6 +171,24 @@ class DetailViewController: UIViewController {
     @objc private func toTopButtonTapped() {
         scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
+    
+    private func drawStar(value: Double) {
+        let floatValue = floor(value * 10) / 10
+        
+        for i in 1...5 {
+            if let starImage = view.viewWithTag(i) as? UIImageView {
+                if Double(i) <= floatValue {
+                    starImage.image = UIImage(systemName: "star.fill")
+                    starImage.tintColor = .orange
+                } else if (Double(i)-floatValue) <= 0.5 {
+                    starImage.image = UIImage(systemName: "star.leadinghalf.filled")
+                    starImage.tintColor = .orange
+                } else {
+                    starImage.image = UIImage(systemName: "star")
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Coniguration Method
@@ -187,7 +210,17 @@ extension DetailViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         
-        [rateLabel, rateImageView].forEach {
+        (1...5).forEach {
+            let imageView = UIImageView(image: UIImage(systemName: "star"))
+            imageView.tag = $0
+            imageView.tintColor = .colorWithHex(hex: 0xC7C7C7)
+            imageView.translatesAutoresizingMaskIntoConstraints = false
+            rateImageStackView.addArrangedSubview(imageView)
+        }
+        
+        rateImageStackView.addArrangedSubview(UIView())
+        
+        [rateLabel, rateImageStackView].forEach {
             rateStackView.addArrangedSubview($0)
         }
         

@@ -158,7 +158,6 @@
 		54C237F629D1632A0090BCC4 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				54C237CD29D13E580090BCC4 /* LaunchScreen.storyboard */,
 				54C237FD29D19B540090BCC4 /* ItemCell.swift */,
 			);
 			path = View;
@@ -167,6 +166,7 @@
 		54C237F729D1635F0090BCC4 /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				54C237CD29D13E580090BCC4 /* LaunchScreen.storyboard */,
 				54C237CB29D13E580090BCC4 /* Assets.xcassets */,
 				54C237D029D13E580090BCC4 /* Info.plist */,
 			);
