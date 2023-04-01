@@ -47,17 +47,17 @@ class DetailViewController: UIViewController {
         }
     }
     
-    private var itemCount: Int? {
+    private var count: Int? {
         didSet {
-            if let itemCount {
-                itemCountLabel.text = "상품구매수량 : \(itemCount)"
+            if let count {
+                itemCountLabel.text = "상품구매수량 : \(count)"
             }
         }
     }
     
-    private var itemContent: String? {
+    private var content: String? {
         didSet {
-            descriptionLabel.text = itemContent
+            descriptionLabel.text = content
         }
     }
     
@@ -149,13 +149,16 @@ class DetailViewController: UIViewController {
         setUI()
         setConstariants()
     }
-    
+}
+
+// MARK: - Coniguration Method
+extension DetailViewController {
     func setData(item: Item) {
         itemTitle = item.title
         imageUrl = item.image
         category = item.category
-        itemContent = item.description
-        itemCount = item.rating.count
+        content = item.description
+        count = item.rating.count
         rate = item.rating.rate
     }
     
@@ -170,7 +173,6 @@ class DetailViewController: UIViewController {
         [imageView, titleLabel, rateStackView, lineView, categoryLabel, itemCountLabel, descriptionLabel].forEach {
             contentView.addSubview($0)
         }
-        
     }
     
     private func setConstariants() {
