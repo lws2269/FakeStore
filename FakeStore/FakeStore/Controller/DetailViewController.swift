@@ -59,7 +59,6 @@ class DetailViewController: UIViewController {
     private var content: String? {
         didSet {
             descriptionLabel.text = content
-            descriptionLabel.text = content
         }
     }
     

@@ -112,11 +112,11 @@
 			isa = PBXGroup;
 			children = (
 				54C237F729D1635F0090BCC4 /* Resource */,
+				54C237F529D163220090BCC4 /* LifeCycle */,
 				54C237F229D149E50090BCC4 /* Common */,
 				54C237FA29D164030090BCC4 /* Model */,
 				54C237F629D1632A0090BCC4 /* View */,
 				54C237F829D163D70090BCC4 /* Controller */,
-				54C237F529D163220090BCC4 /* LifeCycle */,
 			);
 			path = FakeStore;
 			sourceTree = "<group>";

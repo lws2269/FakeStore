@@ -10,6 +10,39 @@ import UIKit
 class ItemCell: UICollectionViewCell {
     static let identifier = ItemCell.description()
     
+    private var itemTitle: String? {
+        didSet {
+            titleLabel.text = itemTitle
+        }
+    }
+    
+    private var price: Double? {
+        didSet {
+            if let price {
+                self.priceLabel.text = "$ \(price)"
+            }
+        }
+        
+        
+    }
+    
+    private var imageUrl: String? {
+        didSet {
+            if let imageUrl {
+                NetworkManager.fetchImage(urlString: imageUrl, completion: { result in
+                    DispatchQueue.main.async {
+                        switch result {
+                        case .success(let image):
+                            self.imageView.image = image
+                        case .failure(_):
+                            self.imageView.image = UIImage(systemName: "x.square")
+                        }
+                    }
+                })
+            }
+        }
+    }
+    
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -46,25 +79,15 @@ class ItemCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        imageView.image = nil
-        titleLabel.text = nil
-        priceLabel.text = nil
+        imageUrl = nil
+        itemTitle = nil
+        price = nil
     }
     
-    func setData(title: String, price: Double, imageURL: String) {
-        self.titleLabel.text = title
-        self.priceLabel.text = "$ \(price)"
-        
-        NetworkManager.fetchImage(urlString: imageURL) { result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let image):
-                    self.imageView.image = image
-                case .failure(_):
-                    break
-                }
-            }
-        }
+    func setData(item: Item) {
+        imageUrl = item.image
+        itemTitle = item.title
+        price = item.price
     }
     
     private func setUI() {

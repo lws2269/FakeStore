@@ -180,7 +180,7 @@ extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSour
         }
     
         if let item = items?[indexPath.item] {
-            cell.setData(title: item.title, price: item.price, imageURL: item.image)
+            cell.setData(item: item)
         }
         
         return cell
