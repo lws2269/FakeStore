@@ -123,20 +123,6 @@ class ListViewController: UIViewController {
         fetchItemAll()
     }
     
-    @objc private func sortDoneButtonTapped() {
-        self.view.endEditing(true)
-        sortLabel.text = sortList[sortState]
-        sortItem(type: SortType(rawValue: sortState))
-    }
-    
-    @objc private func sortButtonTapped() {
-        sortTextField.becomeFirstResponder()
-    }
-    
-    @objc private func toTopButtonTapped() {
-        collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    }
-    
     private func sortItem(type: SortType?) {
         switch type {
         case .desc:
@@ -165,6 +151,22 @@ class ListViewController: UIViewController {
                 break
             }
         }
+    }
+}
+// MARK: - Action
+extension ListViewController {
+    @objc private func sortDoneButtonTapped() {
+        self.view.endEditing(true)
+        sortLabel.text = sortList[sortState]
+        sortItem(type: SortType(rawValue: sortState))
+    }
+    
+    @objc private func sortButtonTapped() {
+        sortTextField.becomeFirstResponder()
+    }
+    
+    @objc private func toTopButtonTapped() {
+        collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
 }
 

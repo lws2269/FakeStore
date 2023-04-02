@@ -167,10 +167,6 @@ class DetailViewController: UIViewController {
         setAction()
     }
     
-    @objc private func toTopButtonTapped() {
-        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    }
-    
     private func drawStar(value: Double) {
         let floatValue = floor(value * 10) / 10
         
@@ -187,6 +183,13 @@ class DetailViewController: UIViewController {
                 }
             }
         }
+    }
+}
+
+// MARK: - Action
+extension DetailViewController {
+    @objc private func toTopButtonTapped() {
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
     }
 }
 

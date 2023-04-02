@@ -122,7 +122,10 @@ class LoginViewController: UIViewController {
         }
         return false
     }
-    
+}
+
+// MARK: - Action
+extension LoginViewController {
     @objc private func passwordHideButtonTapped() {
         passwordTextField.isSecureTextEntry.toggle()
         passwordHideButton.isSelected.toggle()

@@ -7,23 +7,19 @@
 
 import UIKit
 
-class ItemCell: UICollectionViewCell {
+class OnBoardCell: UICollectionViewCell {
     static let identifier = ItemCell.description()
     
-    private var itemTitle: String? {
+    private var title: String? {
         didSet {
-            titleLabel.text = itemTitle
+            titleLabel.text = title
         }
     }
     
-    private var price: Double? {
+    private var content: String? {
         didSet {
-            if let price {
-                priceLabel.text = "$ \(price)"
-            }
+            contentLabel.text = content
         }
-        
-        
     }
     
     private var imageUrl: String? {
@@ -60,7 +56,7 @@ class ItemCell: UICollectionViewCell {
         return label
     }()
     
-    private let priceLabel: UILabel = {
+    private let contentLabel: UILabel = {
         let label = UILabel()
         label.setContentHuggingPriority(.required, for: .vertical)
         label.font = .boldSystemFont(ofSize: 14)
@@ -80,37 +76,21 @@ class ItemCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         imageUrl = nil
-        itemTitle = nil
-        price = nil
+        title = nil
+        content = nil
     }
     
-    func setData(item: Item) {
-        imageUrl = item.image
-        itemTitle = item.title
-        price = item.price
+    func setData(imageUrl: String, title: String, content: String) {
     }
     
     private func setUI() {
-        [imageView, titleLabel, priceLabel].forEach {
+        [imageView, titleLabel, contentLabel].forEach {
             addSubview($0)
         }
     }
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
-            imageView.heightAnchor.constraint(equalToConstant: 230),
-            imageView.topAnchor.constraint(equalTo: self.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: imageView.trailingAnchor),
-            
-            priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
-            priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            priceLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            priceLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
 }
