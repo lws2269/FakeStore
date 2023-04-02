@@ -22,8 +22,6 @@ class ItemCell: UICollectionViewCell {
                 priceLabel.text = "$ \(price)"
             }
         }
-        
-        
     }
     
     private var imageUrl: String? {
@@ -99,9 +97,9 @@ class ItemCell: UICollectionViewCell {
     private func setConstraints() {
         NSLayoutConstraint.activate([
             imageView.heightAnchor.constraint(equalToConstant: 230),
-            imageView.topAnchor.constraint(equalTo: self.topAnchor),
-            imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            imageView.topAnchor.constraint(equalTo: topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
             
             titleLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
             titleLabel.leadingAnchor.constraint(equalTo: imageView.leadingAnchor),
@@ -110,7 +108,7 @@ class ItemCell: UICollectionViewCell {
             priceLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
             priceLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             priceLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            priceLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            priceLabel.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }

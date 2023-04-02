@@ -22,20 +22,9 @@ class OnBoardCell: UICollectionViewCell {
         }
     }
     
-    private var imageUrl: String? {
+    private var image: UIImage? {
         didSet {
-            if let imageUrl {
-                NetworkManager.fetchImage(urlString: imageUrl, completion: { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success(let image):
-                            self.imageView.image = image
-                        case .failure(_):
-                            self.imageView.image = UIImage(systemName: "x.square")
-                        }
-                    }
-                })
-            }
+            imageView.image = image
         }
     }
     
@@ -50,16 +39,17 @@ class OnBoardCell: UICollectionViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.textColor = .colorWithHex(hex: 0x2B2B2B)
-        label.numberOfLines = 2
-        label.font = .systemFont(ofSize: 12)
+        label.textColor = .colorWithHex(hex: 0x878787)
+        label.font = .systemFont(ofSize: 13)
         return label
     }()
     
     private let contentLabel: UILabel = {
         let label = UILabel()
         label.setContentHuggingPriority(.required, for: .vertical)
-        label.font = .boldSystemFont(ofSize: 14)
+        label.font = .boldSystemFont(ofSize: 34)
+        label.numberOfLines = 3
+        label.textColor = .colorWithHex(hex: 0x12348A)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -75,12 +65,15 @@ class OnBoardCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        imageUrl = nil
         title = nil
         content = nil
+        image = nil
     }
     
-    func setData(imageUrl: String, title: String, content: String) {
+    func setData(title: String, content: String, image: UIImage) {
+        self.title = title
+        self.content = content
+        self.image = image
     }
     
     private func setUI() {
@@ -91,6 +84,18 @@ class OnBoardCell: UICollectionViewCell {
     
     private func setConstraints() {
         NSLayoutConstraint.activate([
+            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            contentLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 6),
+            contentLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
+            contentLabel.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
+            
+            imageView.topAnchor.constraint(equalTo: contentLabel.bottomAnchor, constant: 30),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 30),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -30),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
         ])
     }
 }
