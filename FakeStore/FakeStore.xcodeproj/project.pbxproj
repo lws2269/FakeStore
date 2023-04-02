@@ -22,6 +22,7 @@
 		54C237FE29D19B540090BCC4 /* ItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237FD29D19B540090BCC4 /* ItemCell.swift */; };
 		54FCCF2429D57080002A97E5 /* SortType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FCCF2329D57080002A97E5 /* SortType.swift */; };
 		54FCCF2829D5747E002A97E5 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FCCF2729D5747E002A97E5 /* DetailViewController.swift */; };
+		54FCCF2A29D86F0F002A97E5 /* OnBoardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54FCCF2929D86F0F002A97E5 /* OnBoardViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,6 +62,7 @@
 		54C237FD29D19B540090BCC4 /* ItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCell.swift; sourceTree = "<group>"; };
 		54FCCF2329D57080002A97E5 /* SortType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortType.swift; sourceTree = "<group>"; };
 		54FCCF2729D5747E002A97E5 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		54FCCF2929D86F0F002A97E5 /* OnBoardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +181,7 @@
 				54C237C629D13E570090BCC4 /* LoginViewController.swift */,
 				54C237FB29D169690090BCC4 /* ListViewController.swift */,
 				54FCCF2729D5747E002A97E5 /* DetailViewController.swift */,
+				54FCCF2929D86F0F002A97E5 /* OnBoardViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -327,6 +330,7 @@
 				54C237C329D13E570090BCC4 /* AppDelegate.swift in Sources */,
 				54C237FE29D19B540090BCC4 /* ItemCell.swift in Sources */,
 				5429202F29D41E3700AFF6F7 /* NetworkManager.swift in Sources */,
+				54FCCF2A29D86F0F002A97E5 /* OnBoardViewController.swift in Sources */,
 				54FCCF2429D57080002A97E5 /* SortType.swift in Sources */,
 				5494A99329D52569004B04AE /* Item.swift in Sources */,
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
