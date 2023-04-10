@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		5429202F29D41E3700AFF6F7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429202E29D41E3700AFF6F7 /* NetworkManager.swift */; };
 		5494A99329D52569004B04AE /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5494A99229D52569004B04AE /* Item.swift */; };
+		549FB97C29E4308D00F817DE /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549FB97B29E4308D00F817DE /* Identifiable.swift */; };
 		54C237C329D13E570090BCC4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237C229D13E570090BCC4 /* AppDelegate.swift */; };
 		54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237C429D13E570090BCC4 /* SceneDelegate.swift */; };
 		54C237C729D13E570090BCC4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 54C237C629D13E570090BCC4 /* LoginViewController.swift */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		5429202E29D41E3700AFF6F7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5494A99229D52569004B04AE /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
+		549FB97B29E4308D00F817DE /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
 		54C237BF29D13E570090BCC4 /* FakeStore.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FakeStore.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		54C237C229D13E570090BCC4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		54C237C429D13E570090BCC4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				54C237F329D149FB0090BCC4 /* UIColor+Extension.swift */,
+				549FB97B29E4308D00F817DE /* Identifiable.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -335,6 +338,7 @@
 				5429202F29D41E3700AFF6F7 /* NetworkManager.swift in Sources */,
 				54FCCF2A29D86F0F002A97E5 /* OnBoardViewController.swift in Sources */,
 				54FCCF2429D57080002A97E5 /* SortType.swift in Sources */,
+				549FB97C29E4308D00F817DE /* Identifiable.swift in Sources */,
 				5494A99329D52569004B04AE /* Item.swift in Sources */,
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
 				54FCCF2829D5747E002A97E5 /* DetailViewController.swift in Sources */,
