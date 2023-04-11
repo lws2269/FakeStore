@@ -76,6 +76,7 @@ class ItemCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         imageUrl = nil
         itemTitle = nil
         price = nil

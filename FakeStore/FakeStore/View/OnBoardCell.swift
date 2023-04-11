@@ -65,6 +65,7 @@ class OnBoardCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
+        super.prepareForReuse()
         title = nil
         content = nil
         image = nil
