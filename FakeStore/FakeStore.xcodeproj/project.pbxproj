@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		540076F929E6471800FCBBCA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540076F829E6471800FCBBCA /* Constants.swift */; };
 		5429202F29D41E3700AFF6F7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429202E29D41E3700AFF6F7 /* NetworkManager.swift */; };
 		5494A99329D52569004B04AE /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5494A99229D52569004B04AE /* Item.swift */; };
 		549FB97C29E4308D00F817DE /* Identifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549FB97B29E4308D00F817DE /* Identifiable.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		540076F829E6471800FCBBCA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5429202E29D41E3700AFF6F7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5494A99229D52569004B04AE /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		549FB97B29E4308D00F817DE /* Identifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Identifiable.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				54C237CD29D13E580090BCC4 /* LaunchScreen.storyboard */,
 				54C237CB29D13E580090BCC4 /* Assets.xcassets */,
 				54C237D029D13E580090BCC4 /* Info.plist */,
+				540076F829E6471800FCBBCA /* Constants.swift */,
 			);
 			path = Resource;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
 				54FCCF2829D5747E002A97E5 /* DetailViewController.swift in Sources */,
 				54FCCF2E29D93063002A97E5 /* OnBoardCell.swift in Sources */,
+				540076F929E6471800FCBBCA /* Constants.swift in Sources */,
 				54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */,
 				54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */,
 			);

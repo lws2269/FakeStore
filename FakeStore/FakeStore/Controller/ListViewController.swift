@@ -139,11 +139,9 @@ class ListViewController: UIViewController {
     }
     
     private func fetchItemAll() {
-        let urlString = "https://fakestoreapi.com/products"
-        
         spinnerView.startAnimating()
         
-        NetworkManager.fetchItemAll(urlString: urlString) { result in
+        NetworkManager.fetchItemAll(urlString: Constants.URL) { result in
             switch result {
             case .success(let items):
                 self.items = items
