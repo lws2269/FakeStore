@@ -8,7 +8,6 @@
 import UIKit
 
 class OnBoardViewController: UIViewController{
-    
     let pageControl = UIPageControl()
     
     let items: [(String, String, UIImage)] = [
@@ -113,9 +112,8 @@ extension OnBoardViewController: UICollectionViewDelegate, UICollectionViewDataS
             return OnBoardCell()
         }
         
-        cell.setData(title: items[indexPath.item].0,
-                     content: items[indexPath.item].1,
-                     image: items[indexPath.item].2)
+        cell.setData(data: items[indexPath.item])
+        
         return cell
     }
     

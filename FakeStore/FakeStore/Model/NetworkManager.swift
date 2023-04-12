@@ -10,7 +10,7 @@ import UIKit
 
 enum NetworkError: Error {
     case invalidURL
-    case invalidResponse
+    case invalidResponse(code: Int)
     case requestFailed
     case invalidData
     case parseFailed
@@ -29,10 +29,13 @@ class NetworkManager {
                 return
             }
             
-            guard let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 else {
-                
-                completion(.failure(NetworkError.invalidResponse))
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NetworkError.invalidResponse(code: 999)))
+                return
+            }
+            
+            guard httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse(code: httpResponse.statusCode)))
                 return
             }
             
@@ -63,10 +66,13 @@ class NetworkManager {
                 return
             }
             
-            guard let httpResponse = response as? HTTPURLResponse,
-                  httpResponse.statusCode == 200 else {
-                
-                completion(.failure(NetworkError.invalidResponse))
+            guard let httpResponse = response as? HTTPURLResponse else {
+                completion(.failure(NetworkError.invalidResponse(code: 999)))
+                return
+            }
+            
+            guard httpResponse.statusCode == 200 else {
+                completion(.failure(NetworkError.invalidResponse(code: httpResponse.statusCode)))
                 return
             }
             

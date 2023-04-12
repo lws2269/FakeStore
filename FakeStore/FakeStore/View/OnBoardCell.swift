@@ -71,10 +71,10 @@ class OnBoardCell: UICollectionViewCell {
         image = nil
     }
     
-    func setData(title: String, content: String, image: UIImage) {
-        self.title = title
-        self.content = content
-        self.image = image
+    func setData(data: (title: String, content: String, image: UIImage)) {
+        self.title = data.title
+        self.content = data.content
+        self.image = data.image
     }
     
     private func setUI() {
