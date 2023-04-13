@@ -7,6 +7,15 @@
 
 import UIKit
 
+// 페이지 컨트롤 보기, 컴포지셔널 레이아웃 적용
+// 컨트롤 커맨드 < > 열린 파일 이동
+// 이미지 로딩 - 킹피셔
+// 위로 떙겼을때 새로고침 - API다시
+// DTO 모델 옵셔널 처리
+// MVVM
+// Rx
+
+
 class OnBoardViewController: UIViewController{
     let pageControl = UIPageControl()
     
