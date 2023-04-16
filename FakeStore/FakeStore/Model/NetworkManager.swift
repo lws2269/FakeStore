@@ -5,8 +5,8 @@
 //  Created by leewonseok on 2023/03/29.
 //
 
-import Foundation
 import UIKit
+import RxSwift
 
 enum NetworkError: Error {
     case invalidURL
@@ -17,6 +17,38 @@ enum NetworkError: Error {
 }
 
 class NetworkManager {
+    // MARK: - RxFunction
+    static func fetchItemAllRx(urlString: String) -> Observable<[Item]> {
+        return Observable.create { emitter in
+            fetchItemAll(urlString: urlString) { result in
+                switch result {
+                case .success(let items):
+                    emitter.onNext(items)
+                    emitter.onCompleted()
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    static func fetchImage(urlString: String) -> Observable<UIImage> {
+        return Observable.create { emitter in
+            fetchImage(urlString: urlString) { result in
+                switch result {
+                case .success(let image):
+                    emitter.onNext(image)
+                    emitter.onCompleted()
+                case .failure(let error):
+                    emitter.onError(error)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+    
+    // MARK: - NormalFunction
     static func fetchItemAll(urlString: String, completion: @escaping (Result<[Item], Error>) -> Void) {
         guard let url = URL(string: urlString) else {
             completion(.failure(NetworkError.invalidURL))
