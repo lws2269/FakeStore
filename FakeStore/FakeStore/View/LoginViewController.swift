@@ -6,8 +6,13 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class LoginViewController: UIViewController {
+    var viewModel = LoginViewModel()
+    var disposebag = DisposeBag()
+    
     private let pageLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30, weight: .bold)
@@ -114,6 +119,7 @@ class LoginViewController: UIViewController {
         setUI()
         setConstraints()
         setActionAndGesture()
+        setBindings()
     }
     
     private func isInputVaild(_ input: String?) -> Bool {
@@ -121,6 +127,11 @@ class LoginViewController: UIViewController {
             return input.count > 0 ? true : false
         }
         return false
+    }
+    
+    func setBindings() {
+        nameTextField.rx.text.orEmpty.asObservable()
+        
     }
 }
 
