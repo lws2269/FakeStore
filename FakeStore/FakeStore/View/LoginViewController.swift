@@ -10,7 +10,6 @@ import RxSwift
 import RxCocoa
 
 class LoginViewController: UIViewController {
-    var viewModel = LoginViewModel()
     var disposebag = DisposeBag()
     
     private let pageLabel: UILabel = {
@@ -114,24 +113,26 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        nameTextField.delegate = self
-        passwordTextField.delegate = self
         setUI()
         setConstraints()
         setActionAndGesture()
         setBindings()
     }
     
-    private func isInputVaild(_ input: String?) -> Bool {
-        if let input {
-            return input.count > 0 ? true : false
-        }
-        return false
-    }
-    
     func setBindings() {
-        nameTextField.rx.text.orEmpty.asObservable()
+        let viewModel = LoginViewModel(
+            input: (
+                name: nameTextField.rx.text.orEmpty.asObservable(),
+                password: passwordTextField.rx.text.orEmpty.asObservable()
+            )
+        )
         
+        viewModel.isLoginEnabled
+            .subscribe { [weak self] valid in
+                self?.loginButton.backgroundColor = valid ? .colorWithHex(hex: 0x2358E1) : .colorWithHex(hex: 0xD2D2D2)
+                self?.loginButton.isEnabled = valid
+            }
+            .disposed(by: disposebag)
     }
 }
 
@@ -157,19 +158,6 @@ extension LoginViewController {
     
     @objc func passwordResetLabelTapped() {
         print("리셋 버튼 클릭")
-    }
-}
-
-// MARK: - TextFieldDelegate
-extension LoginViewController: UITextFieldDelegate {
-    func textFieldDidChangeSelection(_ textField: UITextField) {
-        if isInputVaild(nameTextField.text) {
-            loginButton.backgroundColor = .colorWithHex(hex: 0x2358E1)
-            loginButton.isEnabled = true
-        } else {
-            loginButton.backgroundColor = .colorWithHex(hex: 0xD2D2D2)
-            loginButton.isEnabled = false
-        }
     }
 }
 

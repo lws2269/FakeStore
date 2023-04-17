@@ -10,20 +10,28 @@ import RxSwift
 import RxCocoa
 
 class LoginViewModel {
-    
-    let name: PublishSubject<String>
-    let password: PublishSubject<String>
-    
-    let validatedname: Observable<Bool>
+    let validatedName: Observable<Bool>
     let validatedPassword: Observable<Bool>
+    let isLoginEnabled: Observable<Bool>
     
-    init(name: PublishSubject<String>, password: PublishSubject<String>, validatedname: Observable<Bool>, validatedPassword: Observable<Bool>) {
+    init(input: (name: Observable<String>,
+                 password: Observable<String>)) {
         
-        self.name = name
-        self.password = password
+        validatedName = input.name.map {
+            return $0.count > 0
+        }
         
-        self.validatedname = validatedname
-        self.validatedPassword = validatedPassword
+        validatedPassword = input.password.map {
+            return $0.count > 0
+        }
+        
+        isLoginEnabled = Observable
+            .combineLatest(validatedName, validatedPassword)
+            .map {
+                return !([$0,$1].contains(false))
+            }
+        
+
     }
-    
 }
+
