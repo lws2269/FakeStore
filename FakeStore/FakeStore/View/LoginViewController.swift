@@ -118,40 +118,10 @@ class LoginViewController: UIViewController {
         setActionAndGesture()
         setBindings()
     }
-    
-    func setBindings() {
-        let viewModel = LoginViewModel(
-            input: (
-                name: nameTextField.rx.text.orEmpty.asObservable(),
-                password: passwordTextField.rx.text.orEmpty.asObservable()
-            )
-        )
-        
-        viewModel.isLoginEnabled
-            .subscribe { [weak self] valid in
-                self?.loginButton.backgroundColor = valid ? .colorWithHex(hex: 0x2358E1) : .colorWithHex(hex: 0xD2D2D2)
-                self?.loginButton.isEnabled = valid
-            }
-            .disposed(by: disposebag)
-    }
 }
 
 // MARK: - Action
 extension LoginViewController {
-    @objc private func passwordHideButtonTapped() {
-        passwordTextField.isSecureTextEntry.toggle()
-        passwordHideButton.isSelected.toggle()
-        
-        let buttonImage = UIImage(systemName:
-                                    passwordTextField.isSecureTextEntry ? "eye" : "eye.slash")
-        passwordHideButton.setImage(buttonImage, for: .normal)
-    }
-    
-    @objc private func loginButtonTapped() {
-        let listViewController = ListViewController()
-        self.navigationController?.pushViewController(listViewController, animated: true)
-    }
-    
     @objc func signUpLabelTapped() {
         print("회원가입 버튼 클릭")
     }
@@ -163,6 +133,44 @@ extension LoginViewController {
 
 // MARK: - Coniguration Method
 extension LoginViewController {
+    func setBindings() {
+        let viewModel = LoginViewModel(
+            input: (
+                name: nameTextField.rx.text.orEmpty.asObservable(),
+                password: passwordTextField.rx.text.orEmpty.asObservable(),
+                loginTap: loginButton.rx.tap.asObservable()
+            )
+        )
+        
+        viewModel.isLoginEnabled
+            .subscribe { [weak self] valid in
+                self?.loginButton.backgroundColor = valid ? .colorWithHex(hex: 0x2358E1) : .colorWithHex(hex: 0xD2D2D2)
+                self?.loginButton.isEnabled = valid
+            }
+            .disposed(by: disposebag)
+        
+        viewModel.isPasswordHidden
+            .subscribe { [weak self] isHidden in
+                self?.passwordTextField.isSecureTextEntry = isHidden
+                self?.passwordHideButton.isSelected = isHidden
+                let buttonImage = UIImage(systemName: isHidden ? "eye" : "eye.slash")
+                self?.passwordHideButton.setImage(buttonImage, for: .normal)
+            }.disposed(by: disposebag)
+        
+        passwordHideButton.rx.tap
+            .subscribe(onNext: {
+                viewModel.isPasswordHidden.accept(!viewModel.isPasswordHidden.value)
+            })
+            .disposed(by: disposebag)
+        
+        loginButton.rx.tap
+            .subscribe(onNext: { [weak self] _ in
+                let listViewController = ListViewController()
+                self?.navigationController?.pushViewController(listViewController, animated: true)
+            })
+            .disposed(by: disposebag)
+    }
+    
     private func setUI() {
         [signUpLabel, lineView, passwordResetLabel].forEach {
             signUpAndResetStackView.addArrangedSubview($0)
@@ -178,9 +186,6 @@ extension LoginViewController {
         let resetGesture = UITapGestureRecognizer(target: self, action: #selector(passwordResetLabelTapped))
         signUpLabel.addGestureRecognizer(signUpGesture)
         passwordResetLabel.addGestureRecognizer(resetGesture)
-        
-        passwordHideButton.addTarget(self, action: #selector(passwordHideButtonTapped), for: .touchUpInside)
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
         loginButton.isEnabled = false
     }
     
