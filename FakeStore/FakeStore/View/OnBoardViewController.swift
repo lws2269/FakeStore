@@ -19,11 +19,7 @@ import UIKit
 class OnBoardViewController: UIViewController{
     let pageControl = UIPageControl()
     
-    let items: [(String, String, UIImage)] = [
-        ("Welcome to PpakCoding", "신선한 과일", UIImage(named: "pageA")!),
-        ("Welcome to PpakCoding", "Spend smarter every day, all from one app.", UIImage(named: "pageB")!),
-        ("Welcome to PpakCoding", "Safe and secure international ppak-coding deep dive", UIImage(named: "pageC")!)
-    ]
+    let viewModel = OnBoardViewModel()
     
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -56,21 +52,21 @@ class OnBoardViewController: UIViewController{
         setConstarints()
         setPageControl()
         setCollectionView()
-        setAction()
+        setBindings()
     }
-}
-
-extension OnBoardViewController {
-    @objc private func loginButtonTapped() {
-        let loginViewController = LoginViewController()
-        self.navigationController?.pushViewController(loginViewController, animated: true)
+    
+    private func setBindings() {
+        let _ = loginButton.rx.tap.subscribe { [weak self] _  in
+            let loginViewController = LoginViewController()
+            self?.navigationController?.pushViewController(loginViewController, animated: true)
+        }
     }
 }
 
 // MARK: - Configure Method
 extension OnBoardViewController {
     private func setPageControl() {
-        pageControl.numberOfPages = items.count
+        pageControl.numberOfPages = viewModel.items.count
         pageControl.currentPageIndicatorTintColor = .black
         pageControl.pageIndicatorTintColor = .gray
         pageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -86,10 +82,6 @@ extension OnBoardViewController {
         [pageControl, collectionView, loginButton].forEach {
             view.addSubview($0)
         }
-    }
-    
-    private func setAction() {
-        loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
     }
     
     private func setConstarints() {
@@ -113,7 +105,7 @@ extension OnBoardViewController {
 // MARK: - CollectionView Method
 extension OnBoardViewController: UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items.count
+        return viewModel.items.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -121,7 +113,7 @@ extension OnBoardViewController: UICollectionViewDelegate, UICollectionViewDataS
             return OnBoardCell()
         }
         
-        cell.setData(data: items[indexPath.item])
+        cell.setData(data: viewModel.items[indexPath.item])
         
         return cell
     }
