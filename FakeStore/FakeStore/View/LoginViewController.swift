@@ -11,6 +11,7 @@ import RxCocoa
 
 class LoginViewController: UIViewController {
     var disposebag = DisposeBag()
+    var viewModel: LoginViewModel?
     
     private let pageLabel: UILabel = {
         let label = UILabel()
@@ -134,7 +135,7 @@ extension LoginViewController {
 // MARK: - Coniguration Method
 extension LoginViewController {
     func setBindings() {
-        let viewModel = LoginViewModel(
+        viewModel = LoginViewModel(
             input: (
                 name: nameTextField.rx.text.orEmpty.asObservable(),
                 password: passwordTextField.rx.text.orEmpty.asObservable(),
@@ -142,14 +143,14 @@ extension LoginViewController {
             )
         )
         
-        viewModel.isLoginEnabled
+        viewModel?.isLoginEnabled
             .subscribe { [weak self] valid in
                 self?.loginButton.backgroundColor = valid ? .colorWithHex(hex: 0x2358E1) : .colorWithHex(hex: 0xD2D2D2)
                 self?.loginButton.isEnabled = valid
             }
             .disposed(by: disposebag)
         
-        viewModel.isPasswordHidden
+        viewModel?.isPasswordHidden
             .subscribe { [weak self] isHidden in
                 self?.passwordTextField.isSecureTextEntry = isHidden
                 self?.passwordHideButton.isSelected = isHidden
@@ -158,10 +159,11 @@ extension LoginViewController {
             }.disposed(by: disposebag)
         
         passwordHideButton.rx.tap
-            .subscribe(onNext: {
-                viewModel.isPasswordHidden.accept(!viewModel.isPasswordHidden.value)
-            })
-            .disposed(by: disposebag)
+            .subscribe { [weak self] _ in
+                let state = self?.viewModel?.isPasswordHidden.value ?? true
+                self?.viewModel?.isPasswordHidden.accept(!state)
+            }.disposed(by: disposebag)
+        
         
         loginButton.rx.tap
             .subscribe(onNext: { [weak self] _ in

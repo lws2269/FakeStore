@@ -17,8 +17,8 @@ import UIKit
 
 
 class OnBoardViewController: UIViewController{
-    let pageControl = UIPageControl()
     
+    let pageControl = UIPageControl()
     let viewModel = OnBoardViewModel()
     
     private let collectionView: UICollectionView = {
