@@ -10,7 +10,6 @@ import RxCocoa
 
 class ListViewModel {
     private let disposeBag = DisposeBag()
-    private let networkManager = NetworkManager()
     
     let items = BehaviorRelay<[Item]>(value: [])
     let isLoading = BehaviorRelay(value: false)
