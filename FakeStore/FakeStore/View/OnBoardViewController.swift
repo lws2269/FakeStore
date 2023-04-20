@@ -6,7 +6,8 @@
 //
 
 import UIKit
-
+import RxSwift
+import RxCocoa
 // 페이지 컨트롤 보기, 컴포지셔널 레이아웃 적용
 // 컨트롤 커맨드 < > 열린 파일 이동
 // 이미지 로딩 - 킹피셔
@@ -15,11 +16,10 @@ import UIKit
 // MVVM
 // Rx
 
-
 class OnBoardViewController: UIViewController{
-    
-    let pageControl = UIPageControl()
-    let viewModel = OnBoardViewModel()
+    let disposeBag: DisposeBag = .init()
+    let pageControl: UIPageControl = .init()
+    let viewModel: OnBoardViewModel = .init()
     
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
@@ -54,27 +54,33 @@ class OnBoardViewController: UIViewController{
         setCollectionView()
         setBindings()
     }
-    
-    private func setBindings() {
-        let _ = loginButton.rx.tap.subscribe { [weak self] _  in
-            let loginViewController = LoginViewController()
-            self?.navigationController?.pushViewController(loginViewController, animated: true)
-        }
-    }
 }
 
 // MARK: - Configure Method
 extension OnBoardViewController {
+    private func setBindings() {
+        loginButton.rx.tap.subscribe { [weak self] _  in
+            let loginViewController = LoginViewController()
+            self?.navigationController?.pushViewController(loginViewController, animated: true)
+        }
+        .disposed(by: disposeBag)
+        
+        viewModel.items
+            .bind(to: collectionView.rx.items(cellIdentifier: OnBoardCell.identifier, cellType: OnBoardCell.self)) { row, item, cell in
+                cell.setData(data: item)
+            }
+            .disposed(by: disposeBag)
+        
+    }
+    
     private func setPageControl() {
-        pageControl.numberOfPages = viewModel.items.count
+        pageControl.numberOfPages = viewModel.items.value.count
         pageControl.currentPageIndicatorTintColor = .black
         pageControl.pageIndicatorTintColor = .gray
         pageControl.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func setCollectionView() {
-        collectionView.delegate = self
-        collectionView.dataSource = self
         collectionView.register(OnBoardCell.self, forCellWithReuseIdentifier: OnBoardCell.identifier)
     }
     
@@ -102,22 +108,8 @@ extension OnBoardViewController {
     }
 }
 
-// MARK: - CollectionView Method
-extension OnBoardViewController: UICollectionViewDelegate, UICollectionViewDataSource, UIScrollViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.items.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnBoardCell.identifier, for: indexPath) as? OnBoardCell else {
-            return OnBoardCell()
-        }
-        
-        cell.setData(data: viewModel.items[indexPath.item])
-        
-        return cell
-    }
-    
+// MARK: - ScrollView Method
+extension OnBoardViewController:  UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let currentPage = Int(scrollView.contentOffset.x / collectionView.frame.size.width)
         pageControl.currentPage = currentPage

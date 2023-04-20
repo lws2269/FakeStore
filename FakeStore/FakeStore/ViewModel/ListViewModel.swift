@@ -17,7 +17,6 @@ class ListViewModel {
     let sortState = BehaviorRelay<SortType>(value: .desc)
     let sortList = [SortType.desc.description, SortType.asc.description]
     
-    
     var sortText: Driver<String> {
         // sortState에 따른 Description
         return sortState.map { [weak self] state in

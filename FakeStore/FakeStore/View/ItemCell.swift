@@ -24,7 +24,7 @@ class ItemCell: UICollectionViewCell {
     }
     
     private var imageUrl: String? {
-        didSet {
+        didSet { 
             if let imageUrl {
                 NetworkManager.fetchImage(urlString: imageUrl, completion: { result in
                     DispatchQueue.main.async {

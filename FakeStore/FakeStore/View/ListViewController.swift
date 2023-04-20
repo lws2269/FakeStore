@@ -112,6 +112,36 @@ class ListViewController: UIViewController {
         setBindings()
     }
     
+}
+// MARK: - Action
+extension ListViewController {
+    @objc private func sortDoneButtonTapped() {
+        self.view.endEditing(true)
+    }
+}
+
+// MARK: - PickerView Method
+extension ListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return viewModel.sortList.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "\(viewModel.sortList[row])"
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        viewModel.sortState.accept(SortType(rawValue: row) ?? .desc)
+    }
+}
+
+// MARK: - Coniguration Method
+extension ListViewController {
+    
     private func setBindings() {
         // 로딩 상태에 따른 스피너와 스택뷰 숨김처리
         viewModel.isLoading
@@ -169,35 +199,7 @@ class ListViewController: UIViewController {
             }
             .disposed(by: disposeBag)
     }
-}
-// MARK: - Action
-extension ListViewController {
-    @objc private func sortDoneButtonTapped() {
-        self.view.endEditing(true)
-    }
-}
-
-// MARK: - PickerView Method
-extension ListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return viewModel.sortList.count
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(viewModel.sortList[row])"
-    }
-    
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        viewModel.sortState.accept(SortType(rawValue: row) ?? .desc)
-    }
-}
-
-// MARK: - Coniguration Method
-extension ListViewController {
     private func setNaviBar() {
         navigationItem.title = "상품목록"
     }
