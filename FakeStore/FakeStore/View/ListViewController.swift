@@ -6,22 +6,13 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import RxGesture
 
 class ListViewController: UIViewController {
-    private let sortList = [SortType.desc.description, SortType.asc.description]
-    private var sortState = 0
-    
-    private var items: [Item]? {
-        didSet {
-            DispatchQueue.main.async {
-                self.sortStackView.isHidden = false
-                self.spinnerView.isHidden = true
-                self.itemCountLabel.text = "\(self.items?.count ?? 0)개의 상품"
-                self.sortLabel.text = self.sortList[self.sortState]
-                self.collectionView.reloadData()
-            }
-        }
-    }
+    let disposeBag: DisposeBag = .init()
+    let viewModel: ListViewModel = .init()
     
     private let toTopButton: UIButton = {
         let button = UIButton()
@@ -100,7 +91,6 @@ class ListViewController: UIViewController {
         return imageView
     }()
     
-    
     private let collectionView: UICollectionView = {
         let flowLayout = UICollectionViewFlowLayout()
         let cellWidth = (UIScreen.main.bounds.width - 50) / 2
@@ -117,83 +107,73 @@ class ListViewController: UIViewController {
         setNaviBar()
         setUI()
         setConstraints()
-        setCollectionView()
         setSortTextField()
-        setActionAndGesture()
-        fetchItemAll()
+        setCollectionView()
+        setBindings()
     }
     
-    private func sortItem(type: SortType?) {
-        switch type {
-        case .desc:
-            items = items?.sorted {
-                $0.id < $1.id
-            }
-        case .asc:
-            items = items?.sorted {
-                $0.id > $1.id
-            }
-        case .none:
-            break
-        }
-    }
-    
-    private func fetchItemAll() {
-        spinnerView.startAnimating()
+    private func setBindings() {
+        // 로딩 상태에 따른 스피너와 스택뷰 숨김처리
+        viewModel.isLoading
+            .map { !$0 }
+            .bind(to: spinnerView.rx.isHidden)
+            .disposed(by: disposeBag)
         
-        NetworkManager.fetchItemAll(urlString: Constants.URL) { result in
-            switch result {
-            case .success(let items):
-                self.items = items
-            case .failure(_):
-                break
+        viewModel.isLoading
+            .bind(to: sortStackView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        // items가 변경되면, Label의 값 변경
+        viewModel.items
+            .map {
+                "\($0.count)개의 상품"
             }
-        }
+            .bind(to: itemCountLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        // items에 따른 컬렉션뷰 설정 - DataSource
+        viewModel.items
+            .bind(to: collectionView.rx.items(cellIdentifier: ItemCell.identifier, cellType: ItemCell.self)) { row, item, cell in
+                cell.setData(item: item)
+            }
+            .disposed(by: disposeBag)
+        
+        // 컬렉션 뷰가 선택되면 행해질 로직 - Delegate
+        collectionView.rx.itemSelected
+            .bind { [weak self] indexPath in
+                guard let self = self else { return }
+                let detailViewController = DetailViewController()
+                let item = self.viewModel.items.value[indexPath.item]
+                detailViewController.setData(item: item)
+                self.navigationController?.pushViewController(detailViewController, animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        // SortText가 변경됨에 따른 sortLabel 변경
+        viewModel.sortText
+            .drive(sortLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        // 위로가기 버튼 클릭시 처리될 로직
+        toTopButton.rx.tap
+            .subscribe { [weak self] _ in
+                self?.collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        // 스택 뷰(sort에 대한)가 선택되면 처리할 로직
+        sortStackView.rx.tapGesture()
+            .when(.recognized)
+            .subscribe { [weak self] _ in
+                self?.sortTextField.becomeFirstResponder()
+            }
+            .disposed(by: disposeBag)
     }
 }
 // MARK: - Action
 extension ListViewController {
     @objc private func sortDoneButtonTapped() {
         self.view.endEditing(true)
-        sortLabel.text = sortList[sortState]
-        sortItem(type: SortType(rawValue: sortState))
-    }
-    
-    @objc private func sortButtonTapped() {
-        sortTextField.becomeFirstResponder()
-    }
-    
-    @objc private func toTopButtonTapped() {
-        collectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
-    }
-}
-
-// MARK: - CollectionView Method
-extension ListViewController: UICollectionViewDelegate, UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return items?.count ?? 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ItemCell.identifier, for: indexPath) as? ItemCell else {
-            return ItemCell()
-        }
-    
-        if let item = items?[indexPath.item] {
-            cell.setData(item: item)
-        }
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let detailViewController = DetailViewController()
-        
-        if let item = items?[indexPath.item] {
-            detailViewController.setData(item: item)
-        }
-        
-        navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 
@@ -204,15 +184,15 @@ extension ListViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return sortList.count
+        return viewModel.sortList.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return "\(sortList[row])"
+        return "\(viewModel.sortList[row])"
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-         sortState = row
+        viewModel.sortState.accept(SortType(rawValue: row) ?? .desc)
     }
 }
 
@@ -222,12 +202,6 @@ extension ListViewController {
         navigationItem.title = "상품목록"
     }
     
-    private func setCollectionView() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
-    }
-    
     private func setSortTextField() {
         let barButton = UIBarButtonItem(title: "완료", style: .done, target: self, action: #selector(sortDoneButtonTapped))
         toolbar.setItems([barButton], animated: true)
@@ -235,12 +209,6 @@ extension ListViewController {
         pickerView.dataSource = self
         sortTextField.inputAccessoryView = toolbar
         sortTextField.inputView = pickerView
-    }
-    
-    private func setActionAndGesture() {
-        let sortGesture = UITapGestureRecognizer(target: self, action: #selector(sortButtonTapped))
-        sortStackView.addGestureRecognizer(sortGesture)
-        toTopButton.addTarget(self, action: #selector(toTopButtonTapped), for: .touchUpInside)
     }
     
     private func setUI() {
@@ -255,6 +223,10 @@ extension ListViewController {
         [labelStackView, collectionView, spinnerView, sortTextField, toTopButton].forEach {
             view.addSubview($0)
         }
+    }
+    
+    private func setCollectionView() {
+        collectionView.register(ItemCell.self, forCellWithReuseIdentifier: ItemCell.identifier)
     }
     
     private func setConstraints() {
