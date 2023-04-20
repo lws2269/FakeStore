@@ -6,61 +6,12 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class DetailViewController: UIViewController {
-    private var imageUrl: String? {
-        didSet {
-            if let imageUrl {
-                NetworkManager.fetchImage(urlString: imageUrl, completion: { result in
-                    DispatchQueue.main.async {
-                        switch result {
-                        case .success(let image):
-                            self.imageView.image = image
-                        case .failure(_):
-                            self.imageView.image = UIImage(systemName: "x.square")
-                        }
-                    }
-                })
-            }
-        }
-    }
-    
-    private var itemTitle: String? {
-        didSet {
-            titleLabel.text = title
-        }
-    }
-    
-    private var category: Category? {
-        didSet {
-            if let category {
-                categoryLabel.text = "카테고리 : \(category.rawValue)"
-            }
-        }
-    }
-    
-    private var rate: Double? {
-        didSet {
-            if let rate {
-                rateLabel.text = "별점 \(rate)"
-                drawStar(value: rate)
-            }
-        }
-    }
-    
-    private var count: Int? {
-        didSet {
-            if let count {
-                itemCountLabel.text = "상품구매수량 : \(count)"
-            }
-        }
-    }
-    
-    private var content: String? {
-        didSet {
-            descriptionLabel.text = content
-        }
-    }
+    let disposeBag: DisposeBag = .init()
+    let viewModel: DetailViewModel
     
     private let toTopButton: UIButton = {
         let button = UIButton()
@@ -159,12 +110,22 @@ class DetailViewController: UIViewController {
         return label
     }()
     
+    init(viewModel: DetailViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setUI()
         setConstariants()
-        setAction()
+        setBindings()
     }
     
     private func drawStar(value: Double) {
@@ -184,30 +145,34 @@ class DetailViewController: UIViewController {
             }
         }
     }
-}
-
-// MARK: - Action
-extension DetailViewController {
-    @objc private func toTopButtonTapped() {
-        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    
+    private func setBindings() {
+        toTopButton.rx.tap
+            .subscribe { [weak self] _ in
+                self?.scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.item.subscribe { [weak self] item in
+            guard let item = item.element else { return }
+            
+            self?.titleLabel.text = item.title
+            self?.categoryLabel.text = "카테고리 : \(item.category.rawValue)"
+            self?.rateLabel.text = "별점 \(item.rating.rate)"
+            self?.drawStar(value: item.rating.rate)
+            self?.itemCountLabel.text = "상품구매수량 : \(item.rating.count)"
+            self?.descriptionLabel.text = item.description
+        } .disposed(by: disposeBag)
+        
+        viewModel.image.drive { [weak self] image in
+            self?.imageView.image = image
+        }
+        .disposed(by: disposeBag)
     }
 }
 
 // MARK: - Coniguration Method
 extension DetailViewController {
-    private func setAction() {
-        toTopButton.addTarget(self, action: #selector(toTopButtonTapped), for: .touchUpInside)
-    }
-    
-    func setData(item: Item) {
-        itemTitle = item.title
-        imageUrl = item.image
-        category = item.category
-        content = item.description
-        count = item.rating.count
-        rate = item.rating.rate
-    }
-    
     private func setUI() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)

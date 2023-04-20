@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		540076F929E6471800FCBBCA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540076F829E6471800FCBBCA /* Constants.swift */; };
+		540F739A29F1069A00EB9C70 /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 540F739929F1069A00EB9C70 /* DetailViewModel.swift */; };
 		5429202F29D41E3700AFF6F7 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5429202E29D41E3700AFF6F7 /* NetworkManager.swift */; };
 		543968E929F0EA3C00428AE9 /* RxGesture in Frameworks */ = {isa = PBXBuildFile; productRef = 543968E829F0EA3C00428AE9 /* RxGesture */; };
 		543B98A429EC2F690014E912 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 543B98A329EC2F690014E912 /* LoginViewModel.swift */; };
@@ -54,6 +55,7 @@
 
 /* Begin PBXFileReference section */
 		540076F829E6471800FCBBCA /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		540F739929F1069A00EB9C70 /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		5429202E29D41E3700AFF6F7 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		543B98A329EC2F690014E912 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		544FD48329EF906200652C0E /* OnBoardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardViewModel.swift; sourceTree = "<group>"; };
@@ -208,6 +210,7 @@
 				543B98A329EC2F690014E912 /* LoginViewModel.swift */,
 				544FD48329EF906200652C0E /* OnBoardViewModel.swift */,
 				544FD48529EFA9DB00652C0E /* ListViewModel.swift */,
+				540F739929F1069A00EB9C70 /* DetailViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				54C237C529D13E570090BCC4 /* SceneDelegate.swift in Sources */,
 				54FCCF2829D5747E002A97E5 /* DetailViewController.swift in Sources */,
 				54FCCF2E29D93063002A97E5 /* OnBoardCell.swift in Sources */,
+				540F739A29F1069A00EB9C70 /* DetailViewModel.swift in Sources */,
 				540076F929E6471800FCBBCA /* Constants.swift in Sources */,
 				54C237FC29D169690090BCC4 /* ListViewController.swift in Sources */,
 				54C237F429D149FB0090BCC4 /* UIColor+Extension.swift in Sources */,

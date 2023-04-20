@@ -172,9 +172,8 @@ extension ListViewController {
         collectionView.rx.itemSelected
             .bind { [weak self] indexPath in
                 guard let self = self else { return }
-                let detailViewController = DetailViewController()
-                let item = self.viewModel.items.value[indexPath.item]
-                detailViewController.setData(item: item)
+                let detailViewController = DetailViewController(viewModel: DetailViewModel(item: self.viewModel.items.value[indexPath.item]))
+                
                 self.navigationController?.pushViewController(detailViewController, animated: true)
             }
             .disposed(by: disposeBag)

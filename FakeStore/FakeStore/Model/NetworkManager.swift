@@ -33,7 +33,7 @@ class NetworkManager {
         }
     }
     
-    static func fetchImage(urlString: String) -> Observable<UIImage> {
+    static func fetchImageRx(urlString: String) -> Observable<UIImage> {
         return Observable.create { emitter in
             fetchImage(urlString: urlString) { result in
                 switch result {
