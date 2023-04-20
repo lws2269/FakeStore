@@ -10,7 +10,7 @@ import RxSwift
 import RxCocoa
 
 class LoginViewController: UIViewController {
-    var disposebag = DisposeBag()
+    var disposeBag = DisposeBag()
     var viewModel: LoginViewModel?
     
     private let pageLabel: UILabel = {
@@ -148,7 +148,7 @@ extension LoginViewController {
                 self?.loginButton.backgroundColor = valid ? .colorWithHex(hex: 0x2358E1) : .colorWithHex(hex: 0xD2D2D2)
                 self?.loginButton.isEnabled = valid
             }
-            .disposed(by: disposebag)
+            .disposed(by: disposeBag)
         
         viewModel?.isPasswordHidden
             .subscribe { [weak self] isHidden in
@@ -156,13 +156,13 @@ extension LoginViewController {
                 self?.passwordHideButton.isSelected = isHidden
                 let buttonImage = UIImage(systemName: isHidden ? "eye" : "eye.slash")
                 self?.passwordHideButton.setImage(buttonImage, for: .normal)
-            }.disposed(by: disposebag)
+            }.disposed(by: disposeBag)
         
         passwordHideButton.rx.tap
             .subscribe { [weak self] _ in
                 let state = self?.viewModel?.isPasswordHidden.value ?? true
                 self?.viewModel?.isPasswordHidden.accept(!state)
-            }.disposed(by: disposebag)
+            }.disposed(by: disposeBag)
         
         
         loginButton.rx.tap
@@ -170,7 +170,7 @@ extension LoginViewController {
                 let listViewController = ListViewController()
                 self?.navigationController?.pushViewController(listViewController, animated: true)
             })
-            .disposed(by: disposebag)
+            .disposed(by: disposeBag)
     }
     
     private func setUI() {
