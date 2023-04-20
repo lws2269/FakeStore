@@ -10,8 +10,8 @@ import RxSwift
 import RxCocoa
 
 class LoginViewController: UIViewController {
-    var disposeBag = DisposeBag()
-    var viewModel: LoginViewModel?
+    var disposeBag: DisposeBag = .init()
+    var viewModel: LoginViewModel = .init()
     
     private let pageLabel: UILabel = {
         let label = UILabel()
@@ -135,22 +135,15 @@ extension LoginViewController {
 // MARK: - Coniguration Method
 extension LoginViewController {
     func setBindings() {
-        viewModel = LoginViewModel(
-            input: (
-                name: nameTextField.rx.text.orEmpty.asObservable(),
-                password: passwordTextField.rx.text.orEmpty.asObservable(),
-                loginTap: loginButton.rx.tap.asObservable()
-            )
-        )
-        
-        viewModel?.isLoginEnabled
+        // 내부 로직에 의해 이름과 패스워드에 따른 아래 로직
+        viewModel.isLoginEnabled
             .subscribe { [weak self] valid in
                 self?.loginButton.backgroundColor = valid ? .colorWithHex(hex: 0x2358E1) : .colorWithHex(hex: 0xD2D2D2)
                 self?.loginButton.isEnabled = valid
             }
             .disposed(by: disposeBag)
         
-        viewModel?.isPasswordHidden
+        viewModel.isPasswordHidden
             .subscribe { [weak self] isHidden in
                 self?.passwordTextField.isSecureTextEntry = isHidden
                 self?.passwordHideButton.isSelected = isHidden
@@ -158,12 +151,21 @@ extension LoginViewController {
                 self?.passwordHideButton.setImage(buttonImage, for: .normal)
             }.disposed(by: disposeBag)
         
+        // 이름과 비밀번호 입력 바인딩
+        nameTextField.rx.text.orEmpty
+            .bind(to: viewModel.inputName)
+            .disposed(by: disposeBag)
+        
+        passwordTextField.rx.text.orEmpty
+            .bind(to: viewModel.inputPassword)
+            .disposed(by: disposeBag)
+        
+        // 버튼 클릭에 대한
         passwordHideButton.rx.tap
             .subscribe { [weak self] _ in
-                let state = self?.viewModel?.isPasswordHidden.value ?? true
-                self?.viewModel?.isPasswordHidden.accept(!state)
+                let state = self?.viewModel.isPasswordHidden.value ?? true
+                self?.viewModel.isPasswordHidden.accept(!state)
             }.disposed(by: disposeBag)
-        
         
         loginButton.rx.tap
             .subscribe(onNext: { [weak self] _ in

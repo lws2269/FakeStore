@@ -8,7 +8,6 @@
 import UIKit
 
 class ItemCell: UICollectionViewCell {
-    
     private var itemTitle: String? {
         didSet {
             titleLabel.text = itemTitle

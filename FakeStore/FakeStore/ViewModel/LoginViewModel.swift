@@ -10,30 +10,24 @@ import RxSwift
 import RxCocoa
 
 class LoginViewModel {
-    let validatedName: Observable<Bool>
-    let validatedPassword: Observable<Bool>
-    let isLoginEnabled: Observable<Bool>
-    let isPasswordHidden: BehaviorRelay<Bool>
+    let disposeBag: DisposeBag = .init()
     
-    init(input: (
-            name: Observable<String>,
-            password: Observable<String>,
-            loginTap: Observable<Void>
-        )
-    ) {
-        isPasswordHidden = .init(value: true)
-        
-        validatedName = input.name.map {
-            return $0.count > 0
-        }
-        
-        validatedPassword = input.password.map {
-            return $0.count > 0
-        }
-        
-        isLoginEnabled = Observable
-            .combineLatest(validatedName, validatedPassword)
-            .map { !([$0,$1].contains(false)) }
+    let inputName: BehaviorRelay<String> = .init(value: "")
+    let inputPassword: BehaviorRelay<String> = .init(value: "")
+    let isLoginEnabled: BehaviorRelay<Bool> = .init(value: false)
+    let isPasswordHidden: BehaviorRelay<Bool> = .init(value: true)
+    
+    init() {
+        setBindings()
+    }
+    
+    private func setBindings() {
+        Observable.combineLatest(inputName, inputPassword)
+            .map {
+                [$0.count > 0, $1.count > 0].contains(false)
+            }.subscribe {
+                self.isLoginEnabled.accept(!$0)
+            }.disposed(by: disposeBag)
     }
     
 }
